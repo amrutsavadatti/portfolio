@@ -418,6 +418,7 @@ span {
 .skills {
     padding:0;
     background: var(--bg-color);
+    
 }
 
 /* .skills h2{
@@ -426,61 +427,138 @@ span {
     text-transform: uppercase;
 } */
 
-.parentSkills {
+.parentSkills_1 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     grid-column-gap: 5px;
     grid-row-gap: 5px;
-    }
+}
     
-    .div1 { grid-area: 1 / 1 / 2 / 2; }
-    .div2 { grid-area: 1 / 2 / 2 / 3; }
-    .div3 { grid-area: 1 / 3 / 2 / 4; }
-    .div4 { grid-area: 2 / 1 / 3 / 2; }
-    .div5 { grid-area: 2 / 2 / 3 / 3; }
-    .div6 { grid-area: 2 / 3 / 3 / 4; }
+.div1 { grid-area: 1 / 1 / 2 / 2; }
+.div2 { grid-area: 1 / 2 / 2 / 3; }
+.div3 { grid-area: 1 / 3 / 2 / 4; }
+.div4 { grid-area: 2 / 1 / 3 / 2; }
+.div5 { grid-area: 2 / 2 / 3 / 3; }
+.div6 { grid-area: 2 / 3 / 3 / 4; }
 
-    .parentSkills img {
-        top: 3rem;
-        width: 10vw;
-    }
-    
-    .parentSkills div {
-        margin: 2rem;
-    }
-    
-    .childSkill {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 3rem;
-        border-radius: 25px;
-        box-shadow: 0 0 10px var(--secondary-color);
-        background-color: var(--second-bg-color);
-        border: 3px solid var(--main-color);
-        transition: 0.3s ease-in-out;
-    }
+.parentSkills_2 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
 
-    .childSkill:hover{
-        transform: scale(1.05);
-        box-shadow: 0 0 25px var(--main-color);
-    }
+.parentSkills_2 .div1 { grid-area: 1 / 1 / 2 / 2; }
+.parentSkills_2 .div2 { grid-area: 1 / 2 / 2 / 3; }
+.parentSkills_2 .div3 { grid-area: 1 / 3 / 2 / 4; }
+.parentSkills_2 .div4 { grid-area: 1 / 4 / 2 / 5; }
+.parentSkills_2 .div5 { grid-area: 1 / 5 / 2 / 6; }
+.parentSkills_2 .div6 { grid-area: 2 / 5 / 3 / 6; }
+.parentSkills_2 .div7 { grid-area: 2 / 4 / 3 / 5; }
+.parentSkills_2 .div8 { grid-area: 2 / 3 / 3 / 4; }
+.parentSkills_2 .div9 { grid-area: 2 / 2 / 3 / 3; }
+.parentSkills_2 .div10 { grid-area: 2 / 1 / 3 / 2; }
 
-    .childSkill h3 {
-        padding: 3px;
-        font-size: 20px;
-        font-weight: 300;
-    }
+.parentSkills_3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
 
-    .skillHeader{
-        font-size: 4rem;
-        text-align: center;
-        margin: 5rem 0;
-        font-weight: 600;
-        color: var(--main-color);
-    }
+.parentSkills_3 .div1 { grid-area: 1 / 1 / 2 / 2; }
+.parentSkills_3 .div2 { grid-area: 1 / 2 / 2 / 3; }
+.parentSkills_3 .div3 { grid-area: 2 / 2 / 3 / 3; }
+.parentSkills_3 .div4 { grid-area: 2 / 1 / 3 / 2; }
+
+.parentSkills_4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
+
+.parentSkills_4 .div1 { grid-area: 1 / 1 / 2 / 2; }
+.parentSkills_4 .div2 { grid-area: 1 / 2 / 2 / 3; }
+.parentSkills_4 .div3 { grid-area: 2 / 2 / 3 / 3; }
+.parentSkills_4 .div4 { grid-area: 2 / 1 / 3 / 2; }
+
+.parentSkills_5 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
+
+.parentSkills_5 .div1 { grid-area: 1 / 1 / 2 / 2; }
+.parentSkills_5  .div2 { grid-area: 1 / 2 / 2 / 3; }
+.parentSkills_5  .div3 { grid-area: 1 / 3 / 2 / 4; }
+.parentSkills_5  .div4 { grid-area: 1 / 4 / 2 / 5; }
+.parentSkills_5  .div5 { grid-area: 2 / 1 / 3 / 2; }
+.parentSkills_5  .div6 { grid-area: 2 / 2 / 3 / 3; }
+.parentSkills_5  .div7 { grid-area: 2 / 3 / 3 / 4; }
+.parentSkills_5  .div8 { grid-area: 2 / 4 / 3 / 5; }
+
+
+.childSkill img {
+    top: 3rem;
+    width: 10vw;
+}
+
+.parentSkills_1 div,
+.parentSkills_2 div,
+.parentSkills_3 div,
+.parentSkills_4 div,
+.parentSkills_5 div {
+    margin: 2rem;
+}
+
+.childSkill {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: 0 0 10px var(--secondary-color);
+    background-color: var(--second-bg-color);
+    border: 3px solid var(--main-color);
+    transition: 0.3s ease-in-out;
+}
+
+.childSkill:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--main-color);
+}
+
+.childSkill h3 {
+    padding: 3px;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.skillHeader{
+    font-size: 4rem;
+    text-align: center;
+    margin: 5rem 0;
+    font-weight: 600;
+    color: var(--main-color);
+}
+
+.all_skills {
+    /* display: flex; */
+    /* justify-content: center; */
+    /* overflow-x: hidden; */
+}
+
+.one_skill {
+    max-width: 100vw;
+}
 
 .contact {
     padding: 100px 15px;
