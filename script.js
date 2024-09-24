@@ -41,6 +41,95 @@ tl.from(".home-content div", {
     duration: 0.5
 })
 
+gsap.from(".timeline-item:nth-child(1)", {
+    opacity: 0,
+    y: 30,
+    scrollTrigger: {
+        trigger: "#experience",
+        scroller: "body",
+        // markers:true,
+        start: "top 0%",
+        end: "top -10%",
+        scrub: 2,
+        pin:true
+
+    }
+})
+
+gsap.from(".timeline-item:nth-child(2)", {
+    opacity: 0,
+    y: 30,
+    scrollTrigger: {
+        trigger: "#experience",
+        scroller: "body",
+        // markers:true,
+        start: "top -40%",
+        end: "top -45%",
+        scrub: 2,
+        pin:true
+
+    }
+})
+
+gsap.from(".timeline-item:nth-child(3)", {
+    opacity: 0,
+    y: 30,
+    scrollTrigger: {
+        trigger: "#experience",
+        scroller: "body",
+        // markers:true,
+        start: "top -80%",
+        end: "top -85%",
+        scrub: 1,
+        pin:true
+
+    }
+})
+
+gsap.from(".timeline-item:nth-child(4)", {
+    opacity: 0,
+    y: 30,
+    scrollTrigger: {
+        trigger: "#experience",
+        scroller: "body",
+        // markers:true,
+        start: "top -120%",
+        end: "top -125%",
+        scrub: 1,
+        pin:true
+
+    }
+})
+
+gsap.from(".timeline-item:nth-child(5)", {
+    opacity: 0,
+    y: 30,
+    scrollTrigger: {
+        trigger: "#experience",
+        scroller: "body",
+        // markers:true,
+        start: "top -140%",
+        end: "top -145%",
+        scrub: 1,
+        pin:true
+
+    }
+})
+
+gsap.to(".all_skills", {
+    transform: "translateX(-320%)",
+    scrollTrigger: {
+        trigger: "#skills",
+        scroller: "body",
+        // markers:true,
+        start: "top -25%",
+        end: "top -100%",
+        scrub: 5,
+        pin:true
+
+    }
+})
+
 // gsap.to("#head", {
 //     transform: "translateX(-240%)",
 //     scrollTrigger: {
