@@ -565,10 +565,71 @@ span {
     color: var(--trim-color);
 }
 
-/* #mic {
-    max-height: 30vh;
-    max-width: 10vh;
-} */
+/* tablet */
+@media (max-width: 768px) {
+    html {
+        font-size: 50%; 
+    }
+
+    .header {
+        padding: 2rem 5%; 
+    }
+
+    .logo {
+        font-size: 2rem; 
+    }
+
+    .navbar a {
+        font-size: 1.5rem; 
+    }
+
+    .home-content h1 {
+        font-size: 5rem; 
+    }
+
+    .home-content p {
+        font-size: 1.3rem; 
+    }
+
+    .social-icons a {
+        width: 3.5rem;
+        height: 3.5rem; 
+    }
+}
+
+/* Media Queries for Mobile Phones */
+@media (max-width: 480px) {
+    html {
+        font-size: 40%; 
+    }
+
+    .header {
+        flex-direction: column; 
+        align-items: center;
+    }
+
+    .navbar {
+        margin-top: 1rem;
+    }
+
+    .navbar a {
+        margin: 0 1rem; 
+    }
+
+    .home {
+        flex-direction: column; 
+        gap: 5rem;
+    }
+
+    .home-img img {
+        width: 80vw; 
+    }
+
+    .one_skill {
+        margin-bottom: 2rem; 
+    }
+}
+
 
 
 /* 20:24 https://www.youtube.com/watch?v=UqHILyzcULE */
