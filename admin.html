@@ -184,12 +184,31 @@
                 <h2 class="section-title">Resume</h2>
                 <form id="resume-form" class="admin-form">
                     <div class="form-group">
-                        <label for="resume-file">Upload Resume PDF</label>
-                        <input type="file" id="resume-file" name="resume" accept="application/pdf">
+                        <h3>Choose Resume Source</h3>
+                        <div class="resume-options">
+                            <div class="option">
+                                <input type="radio" id="local-resume" name="resume-source" value="local" checked>
+                                <label for="local-resume">Use Local Resume (Amrut_CV.pdf)</label>
+                                <p class="helper-text">Uses the resume file from the website directory</p>
+                            </div>
+                            
+                            <div class="option">
+                                <input type="radio" id="custom-resume" name="resume-source" value="custom">
+                                <label for="custom-resume">Upload Custom Resume</label>
+                                <div class="upload-container" id="resume-upload-container">
+                                    <input type="file" id="resume-file" name="resume" accept="application/pdf" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Resume Preview</label>
                         <div class="pdf-preview" id="resume-preview">
                             <p>Current resume will be displayed here</p>
                         </div>
                     </div>
+                    
                     <button type="submit" class="btn save-btn">Save Changes</button>
                 </form>
             </section>

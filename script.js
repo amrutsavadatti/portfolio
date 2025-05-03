@@ -41,136 +41,6 @@ tl.from(".home-content div", {
     duration: 0.5
 })
 
-gsap.from(".timeline-item:nth-child(1)", {
-    opacity: 0,
-    y: 30,
-    scrollTrigger: {
-        trigger: "#experience",
-        scroller: "body",
-        // markers:true,
-        start: "top 0%",
-        end: "top -10%",
-        scrub: 2,
-        pin:true
-
-    }
-})
-
-gsap.from(".timeline-item:nth-child(2)", {
-    opacity: 0,
-    y: 30,
-    scrollTrigger: {
-        trigger: "#experience",
-        scroller: "body",
-        // markers:true,
-        start: "top -40%",
-        end: "top -45%",
-        scrub: 2,
-        pin:true
-
-    }
-})
-
-gsap.from(".timeline-item:nth-child(3)", {
-    opacity: 0,
-    y: 30,
-    scrollTrigger: {
-        trigger: "#experience",
-        scroller: "body",
-        // markers:true,
-        start: "top -80%",
-        end: "top -85%",
-        scrub: 1,
-        pin:true
-
-    }
-})
-
-gsap.from(".timeline-item:nth-child(4)", {
-    opacity: 0,
-    y: 30,
-    scrollTrigger: {
-        trigger: "#experience",
-        scroller: "body",
-        // markers:true,
-        start: "top -120%",
-        end: "top -125%",
-        scrub: 1,
-        pin:true
-
-    }
-})
-
-gsap.from(".timeline-item:nth-child(5)", {
-    opacity: 0,
-    y: 30,
-    scrollTrigger: {
-        trigger: "#experience",
-        scroller: "body",
-        // markers:true,
-        start: "top -140%",
-        end: "top -145%",
-        scrub: 1,
-        pin:true
-
-    }
-})
-
-// gsap.to(".all_skills", {
-//     transform: "translateX(-320%)",
-//     scrollTrigger: {
-//         trigger: "#skills",
-//         scroller: "body",
-//         // markers:true,
-//         start: "top -25%",
-//         end: "top -100%",
-//         scrub: 5,
-//         pin:true
-
-//     }
-// })
-
-// gsap.to("#head", {
-//     transform: "translateX(-240%)",
-//     scrollTrigger: {
-//         trigger: "#experience",
-//         scroller: "body",
-//         markers:true,
-//         start: "top -30%",
-//         end: "top -100%",
-//         scrub: 2,
-//         pin:true
-
-//     }
-// })
-
-// Working skills slider
-
-// gsap.to("#skills h2", {
-//     transform: "translateX(-120%)",
-//     scrollTrigger: {
-//         trigger: "#skills",
-//         scroller: "body",
-//         markers:true,
-//         start: "top -17%",
-//         end: "top -100%",
-//         scrub: 1,
-//         pin:true
-
-//     }
-// })
-
-// gsap.to("#experience #timeline-items", {
-//     transform: "translateY(-9000)",
-//     scrollTrigger: {
-//         trigger: ".experience",
-//         scroller: "body",
-//         markers: true,
-//         start: "top 0%",
-//         end: "top -100%",
-//         pin: true
-//     }
-// })
 
 // Load data from localStorage if available
 document.addEventListener('DOMContentLoaded', function() {
@@ -314,40 +184,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Update resume section if exists
-        if (localStorage.getItem(resumeKey) && document.querySelector('.resume-frame')) {
+        if (document.querySelector('.resume-frame')) {
             const resumeFrame = document.querySelector('.resume-frame');
-            const iframe = resumeFrame.querySelector('iframe');
+            let resumeUrl = localStorage.getItem('portfolio_resume') || './Amrut_CV.pdf';
             
-            if (iframe) {
-                iframe.src = localStorage.getItem(resumeKey) + '#toolbar=0';
+            // If the stored URL is a path to the local file, use it directly
+            if (resumeUrl === './Amrut_CV.pdf') {
+                updateResumeDisplay(resumeFrame, resumeUrl);
             } else {
-                // Create iframe if it doesn't exist
-                const newIframe = document.createElement('iframe');
-                newIframe.src = localStorage.getItem(resumeKey) + '#toolbar=0';
-                newIframe.frameBorder = '0';
-                resumeFrame.appendChild(newIframe);
+                // Otherwise use the stored data URL or path
+                updateResumeDisplay(resumeFrame, resumeUrl);
             }
             
-            // Ensure overlay exists
-            let frameOverlay = resumeFrame.querySelector('.frame-overlay');
-            if (!frameOverlay) {
-                frameOverlay = document.createElement('div');
-                frameOverlay.className = 'frame-overlay';
-                frameOverlay.innerHTML = '<span>Click to view resume in full screen</span>';
-                resumeFrame.appendChild(frameOverlay);
-            }
-            
-            // Attach click handler to overlay
-            frameOverlay.addEventListener('click', function() {
-                window.open(localStorage.getItem(resumeKey), '_blank');
-            });
-            
-            // Update download and view buttons
+            // Update buttons
             const downloadBtn = document.querySelector('.btn-group a[download]');
             const viewBtn = document.querySelector('.btn-group a.btn-view');
             
-            if (downloadBtn) downloadBtn.href = localStorage.getItem(resumeKey);
-            if (viewBtn) viewBtn.href = localStorage.getItem(resumeKey);
+            if (downloadBtn) {
+                downloadBtn.href = resumeUrl;
+                downloadBtn.setAttribute('download', 'Amrut_resume.pdf');
+            }
+            if (viewBtn) viewBtn.href = resumeUrl;
+        }
+        
+        // Joke section animations when in viewport
+        const jokeSection = document.querySelector('#joke');
+        if (jokeSection) {
+            // Create an observer for the joke section
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add animation classes when in viewport
+                        document.querySelector('.joke-setup').classList.add('animate');
+                        
+                        // Animate punchline after a delay
+                        setTimeout(() => {
+                            document.querySelector('.joke-punchline').classList.add('animate');
+                        }, 800);
+                        
+                        // Animate tagline after another delay
+                        setTimeout(() => {
+                            document.querySelector('.joke-tagline').classList.add('animate');
+                        }, 1600);
+                        
+                        // Stop observing after animation
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            // Start observing the joke section
+            observer.observe(jokeSection);
         }
     }
 
@@ -355,19 +242,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const frameOverlay = document.querySelector('.frame-overlay');
     if (frameOverlay) {
         frameOverlay.addEventListener('click', function() {
-            const resumeUrl = localStorage.getItem('portfolio_resume');
-            if (resumeUrl) {
-                window.open(resumeUrl, '_blank');
-            } else {
-                // Fallback to the default URL in the HTML
-                const viewResumeBtn = document.querySelector('.btn-view');
-                if (viewResumeBtn) {
-                    window.open(viewResumeBtn.getAttribute('href'), '_blank');
-                }
-            }
+            const resumeUrl = localStorage.getItem('portfolio_resume') || './Amrut_CV.pdf';
+            window.open(resumeUrl, '_blank');
         });
     }
 });
+
+// Helper function to update resume display
+function updateResumeDisplay(container, resumeUrl) {
+    const iframe = container.querySelector('iframe');
+    
+    if (iframe) {
+        iframe.src = resumeUrl + (resumeUrl.includes('.pdf') ? '#toolbar=0' : '');
+    } else {
+        // Create iframe if it doesn't exist
+        const newIframe = document.createElement('iframe');
+        newIframe.src = resumeUrl + (resumeUrl.includes('.pdf') ? '#toolbar=0' : '');
+        newIframe.frameBorder = '0';
+        container.appendChild(newIframe);
+    }
+    
+    // Ensure overlay exists
+    let frameOverlay = container.querySelector('.frame-overlay');
+    if (!frameOverlay) {
+        frameOverlay = document.createElement('div');
+        frameOverlay.className = 'frame-overlay';
+        frameOverlay.innerHTML = '<span>Click here to view resume in full screen</span>';
+        container.appendChild(frameOverlay);
+    }
+    
+    // Attach click handler to overlay
+    frameOverlay.addEventListener('click', function() {
+        window.open(resumeUrl, '_blank');
+    });
+}
 
 // Mobile Menu Toggle
 document.querySelector('#menu-icon').addEventListener('click', () => {

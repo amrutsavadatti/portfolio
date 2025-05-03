@@ -108,9 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (resumeUrl) {
             // Create iframe and overlay
             resumePreview.innerHTML = `
-                <iframe src="${resumeUrl}" frameborder="0"></iframe>
+                <iframe src="${resumeUrl}#toolbar=0" frameborder="0"></iframe>
                 <div class="frame-overlay">
-                    <span>Click to view in full screen</span>
+                    <span>Click here to view resume in full screen</span>
                 </div>
             `;
             
@@ -247,6 +247,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Handle resume source selection
+    const setupResumeSourceSelection = () => {
+        const localResumeRadio = document.getElementById('local-resume');
+        const customResumeRadio = document.getElementById('custom-resume');
+        const resumeFileInput = document.getElementById('resume-file');
+        
+        if (localResumeRadio && customResumeRadio && resumeFileInput) {
+            // Toggle file input based on radio selection
+            localResumeRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    resumeFileInput.disabled = true;
+                }
+            });
+            
+            customResumeRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    resumeFileInput.disabled = false;
+                }
+            });
+            
+            // Initial state
+            resumeFileInput.disabled = localResumeRadio.checked;
+        }
+    };
+
     // Form submission handlers
     document.getElementById('personal-form').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -340,14 +365,45 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('resume-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const resumeFile = this.querySelector('#resume-file').files[0];
-        if (resumeFile) {
+        const useLocalResume = document.getElementById('local-resume').checked;
+        const resumeFile = document.getElementById('resume-file').files[0];
+        
+        if (useLocalResume) {
+            // Use the default local file
+            dataStore.saveResume(null);
+            showNotification('Using local resume file (Amrut_CV.pdf)');
+            
+            // Refresh the preview with local file
+            updateResumePreview('./Amrut_CV.pdf');
+        } else if (resumeFile) {
             dataStore.saveResume(resumeFile);
-            showNotification('Resume saved successfully');
+            showNotification('Custom resume uploaded successfully');
         } else {
-            showNotification('Please select a resume file', 'error');
+            showNotification('Please select a resume file for upload', 'error');
+            return;
         }
     });
+
+    // Helper function to update resume preview
+    function updateResumePreview(resumeUrl) {
+        const resumePreview = document.getElementById('resume-preview');
+        if (resumePreview && resumeUrl) {
+            resumePreview.innerHTML = `
+                <iframe src="${resumeUrl}#toolbar=0" frameborder="0"></iframe>
+                <div class="frame-overlay">
+                    <span>Click here to view resume in full screen</span>
+                </div>
+            `;
+            
+            // Add click handler to overlay
+            const overlay = resumePreview.querySelector('.frame-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    window.open(resumeUrl, '_blank');
+                });
+            }
+        }
+    }
 
     // Notification system
     const showNotification = (message, type = 'success') => {
@@ -512,23 +568,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Render skills
         renderSkillItems();
         
+        // Set up resume source selection
+        setupResumeSourceSelection();
+        
         // Load resume preview if exists
         const resumeUrl = dataStore.getResumeUrl();
         if (resumeUrl) {
-            document.getElementById('resume-preview').innerHTML = `
-                <iframe src="${resumeUrl}" frameborder="0"></iframe>
-                <div class="frame-overlay">
-                    <span>Click to view in full screen</span>
-                </div>
-            `;
-            
-            // Add click handler to overlay
-            const overlay = document.getElementById('resume-preview').querySelector('.frame-overlay');
-            if (overlay) {
-                overlay.addEventListener('click', function() {
-                    window.open(resumeUrl, '_blank');
-                });
-            }
+            updateResumePreview(resumeUrl);
         }
         
         // Load profile pic preview if exists

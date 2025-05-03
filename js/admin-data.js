@@ -136,6 +136,11 @@ const dataStore = (function() {
         if (!localStorage.getItem(KEYS.SKILLS)) {
             localStorage.setItem(KEYS.SKILLS, JSON.stringify(DEFAULT_DATA.skills));
         }
+        
+        // Set default resume path if not set
+        if (!localStorage.getItem(KEYS.RESUME)) {
+            localStorage.setItem(KEYS.RESUME, './Amrut_CV.pdf');
+        }
     };
 
     // Initialize on load
@@ -299,16 +304,22 @@ const dataStore = (function() {
         
         // Resume
         saveResume: (file) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem(KEYS.RESUME, e.target.result);
-            };
-            reader.readAsDataURL(file);
+            if (file) {
+                // If a file is provided, read and store it
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem(KEYS.RESUME, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // If no file is provided, use the default local file
+                localStorage.setItem(KEYS.RESUME, './Amrut_CV.pdf');
+            }
             return true;
         },
         
         getResumeUrl: () => {
-            return localStorage.getItem(KEYS.RESUME);
+            return localStorage.getItem(KEYS.RESUME) || './Amrut_CV.pdf';
         },
         
         // Export all data (for backup)
