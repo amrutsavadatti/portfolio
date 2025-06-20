@@ -5,6 +5,8 @@ class Chatbot {
         this.isTyping = false;
         this.messageHistory = [];
         this.apiEndpoint = 'YOUR_API_ENDPOINT_HERE'; // Replace with your actual API endpoint
+        this.contactFormShown = false;
+        this.userData = {};
         
         this.init();
     }
@@ -13,6 +15,8 @@ class Chatbot {
         this.bindEvents();
         this.showWelcomeNotification();
         this.addEntranceAnimation();
+        this.bindContactFormEvents();
+        this.contactFormShown = true; // Form is already in HTML
     }
     
     bindEvents() {
@@ -132,7 +136,10 @@ class Chatbot {
         
         // Focus on input
         setTimeout(() => {
-            document.getElementById('chat-input').focus();
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput) {
+                chatInput.focus();
+            }
         }, 300);
         
         // Scroll to bottom
@@ -238,6 +245,131 @@ class Chatbot {
         
         // Scroll to bottom
         this.scrollToBottom();
+    }
+    
+    bindContactFormEvents() {
+        const form = document.getElementById('contact-form');
+        if (form) {
+            const skipBtn = form.querySelector('.btn-skip');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleContactFormSubmit();
+            });
+            
+            skipBtn.addEventListener('click', () => {
+                this.handleContactFormSkip();
+            });
+        }
+    }
+    
+    showContactForm() {
+        if (this.contactFormShown) return;
+        
+        // Form is already in HTML, just mark as shown
+        this.contactFormShown = true;
+        this.scrollToBottom();
+    }
+    
+    async handleContactFormSubmit() {
+        const nameInput = document.getElementById('contact-name');
+        const emailInput = document.getElementById('contact-email');
+        
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        
+        if (!name || !email) {
+            this.showFormError('Please fill in both name and email fields.');
+            return;
+        }
+        
+        if (!this.isValidEmail(email)) {
+            this.showFormError('Please enter a valid email address.');
+            return;
+        }
+        
+        // Get client IP
+        const clientIP = await this.getClientIP();
+        
+        // Store user data
+        this.userData = { name, email, ip: clientIP };
+        
+        // Send data to endpoint
+        await this.sendContactData();
+        
+        // Hide form and show success message
+        this.hideContactForm();
+        this.addMessage(`Thank you, ${name}! I've received your information. How can I help you today?`, 'bot');
+    }
+    
+    handleContactFormSkip() {
+        this.hideContactForm();
+        this.addMessage('No problem! How can I help you today?', 'bot');
+    }
+    
+    hideContactForm() {
+        const form = document.getElementById('contact-form');
+        if (form) {
+            form.style.display = 'none';
+        }
+    }
+    
+    showFormError(message) {
+        const form = document.getElementById('contact-form');
+        let errorDiv = form.querySelector('.form-error');
+        
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.className = 'form-error';
+            form.appendChild(errorDiv);
+        }
+        
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+    }
+    
+    isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    async getClientIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            console.error('Error fetching IP:', error);
+            return 'unknown';
+        }
+    }
+    
+    async sendContactData() {
+        try {
+            const response = await fetch('/email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: this.userData.name,
+                    email: this.userData.email,
+                    ip: this.userData.ip,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                })
+            });
+            
+            if (!response.ok) {
+                console.error('Failed to send contact data');
+            }
+        } catch (error) {
+            console.error('Error sending contact data:', error);
+        }
     }
     
     showTypingIndicator() {
