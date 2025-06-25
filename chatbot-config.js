@@ -21,7 +21,7 @@ const CHATBOT_CONFIG = {
         WELCOME_MESSAGE: "Hi! I'm Amrut's AI assistant. I can help you learn more about his skills, experience, or answer any questions you might have. What would you like to know?",
         
         // Bot name
-        BOT_NAME: "Clarice AI",
+        BOT_NAME: "AI Assistant",
         
         // Bot description
         BOT_DESCRIPTION: "Ask me anything about Amrut!",
@@ -52,7 +52,7 @@ const CHATBOT_CONFIG = {
         
         // Demo responses for common questions
         RESPONSES: {
-            greeting: "Hello! I'm Amrut's AI assistant Clarice. How can I help you learn more about him today?",
+            greeting: "Hello! I'm Amrut's AI assistant. How can I help you learn more about him today?",
             experience: "Amrut has extensive experience as a Web Applications Developer at Media.net (2021-2024), where he built tools for ad campaigns, developed centralized data processors, and worked with technologies like Kafka, Elasticsearch, and Druid. He also has freelance experience in mobile app development and full-stack development.",
             skills: "Amrut is skilled in multiple technologies including JavaScript, React, Node.js, Python, Flutter, and various databases. He has experience with cloud platforms, DevOps tools, and modern web development frameworks. His expertise spans from frontend design to backend architecture.",
             contact: "You can contact Amrut via email at amrutsavadatti+careers@gmail.com or connect with him on LinkedIn. He's always open to discussing new opportunities and collaborations!",
