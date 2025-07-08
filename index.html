@@ -428,7 +428,7 @@
         <div class="chat-container" id="chat-container">
             <div class="chat-header">
                 <div class="chat-header-info">
-                    <h3>AI Assistant</h3>
+                    <h3>Clarity</h3>
                     <p>Ask me anything about Amrut!</p>
                 </div>
                 <button class="chat-close" id="chat-close">
@@ -439,20 +439,22 @@
             <div class="chat-messages" id="chat-messages">
                 <div class="message bot-message">
                     <div class="message-avatar">
-                        <i class='bx bx-bot'></i>
+                        <img src="clarity.JPG" alt="Clarity AI Assistant" class="bot-avatar-image">
                     </div>
                     <div class="message-content">
-                        <p>Hi! I'm Amrut's AI assistant. I can help you learn more about his skills, experience, or answer any questions you might have. Before we continue, could you please share your contact information?</p>
+                        <p>Hi! I'm Amrut's AI assistant, 'Clarity'. I can help you learn more about his skills, experience, or answer any questions you might have. To get started, please provide your email address (required) and optionally your company name:</p>
                         <form id="contact-form" class="contact-form">
                             <div class="form-group">
                                 <input type="text" id="contact-name" placeholder="Your name" required>
                             </div>
                             <div class="form-group">
-                                <input type="email" id="contact-email" placeholder="Your email" required>
+                                <input type="email" id="contact-email" placeholder="Your email (required)" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="contact-company" placeholder="Your company (optional)">
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="btn-submit">Submit</button>
-                                <button type="button" class="btn-skip">Skip</button>
+                                <button type="submit" class="btn-submit">Start Chat</button>
                             </div>
                         </form>
                     </div>

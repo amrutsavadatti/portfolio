@@ -6,8 +6,7 @@ class Chatbot {
         this.messageHistory = [];
         this.apiEndpoint = 'YOUR_API_ENDPOINT_HERE'; // Replace with your actual API endpoint
         this.contactFormShown = false;
-        this.userData = {};
-        
+        this.userData = {};        
         this.init();
     }
     
@@ -158,10 +157,29 @@ class Chatbot {
     }
     
     async sendMessage() {
+        console.log('🔵 sendMessage called');
         const chatInput = document.getElementById('chat-input');
         const message = chatInput.value.trim();
         
-        if (!message || this.isTyping) return;
+        console.log('📝 Message content:', message);
+        console.log('⏳ isTyping:', this.isTyping);
+        
+        if (!message || this.isTyping) {
+            console.log('❌ Returning early - no message or typing');
+            return;
+        }
+        
+        // Check if user is registered
+        console.log('👤 User data:', this.userData);
+        console.log('✅ User registered?', this.userData.isRegistered);
+        
+        if (!this.userData.isRegistered) {
+            console.log('⚠️ User not registered, showing error message');
+            this.addMessage('Please register first by providing your email address in the form above.', 'bot');
+            return;
+        }
+        
+        console.log('➡️ Proceeding with API call...');
         
         // Add user message to chat
         this.addMessage(message, 'user');
@@ -172,40 +190,61 @@ class Chatbot {
         this.showTypingIndicator();
         
         try {
+            // Test if callAPI method exists
+            console.log('🚀 About to call callAPI with message:', message);
+            console.log('🔍 this.callAPI exists?', typeof this.callAPI);
+            console.log('🔍 this object:', this);
+            
+            // Test method call first
+            console.log('🧪 Testing simple method call...');
+            
             // Call your API
-            const response = await this.callAPI(message);
+            console.log('🔥 Calling this.callAPI now...');
+            
+            // Make API call to /chat?question={message} endpoint
+            console.log('🔥 Making API call to 127.0.0.1:8000...');
+            const url = `http://127.0.0.1:8000/chat?question=${encodeURIComponent(message)}`;
+            console.log('🔥 Full URL:', url);
+            console.log('🔥 Endpoint: /chat?question=' + encodeURIComponent(message));
+            
+            const apiResponse = await fetch(url, { 
+                method: 'GET',
+                credentials: 'include',  // Send cookies for authentication
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            console.log('🔥 API Response Status:', apiResponse.status);
+            console.log('🔥 API Response OK?', apiResponse.ok);
+            
+            if (!apiResponse.ok) {
+                throw new Error(`API request failed with status: ${apiResponse.status}`);
+            }
+            
+            const apiData = await apiResponse.json();
+            console.log('🔥 Full API Response:', apiData);
+            
+            // Extract the response field as per your expected format
+            const response = apiData.response || 'No response field found';
+            console.log('🎉 Extracted Response:', response);
+            console.log('✅ API call completed, response:', response);
             this.hideTypingIndicator();
             
             // Add bot response
             this.addMessage(response, 'bot');
             
         } catch (error) {
+            console.log('❌ API call failed:', error);
+            console.log('❌ Error details:', error.message);
+            console.log('❌ Error stack:', error.stack);
             this.hideTypingIndicator();
             this.addMessage('Sorry, I encountered an error. Please try again later.', 'bot');
             console.error('Chatbot API error:', error);
         }
     }
     
-    async callAPI(message) {
-        // Replace this with your actual API call
-        const response = await fetch(this.apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: message,
-                context: this.messageHistory
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error('API request failed');
-        }
-        
-        const data = await response.json();
-        return data.response || data.message || 'I received your message but couldn\'t process it properly.';
-    }
     
     addMessage(content, sender) {
         const chatMessages = document.getElementById('chat-messages');
@@ -215,9 +254,17 @@ class Chatbot {
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
         
-        const icon = document.createElement('i');
-        icon.className = sender === 'bot' ? 'bx bx-bot' : 'bx bx-user';
-        avatar.appendChild(icon);
+        if (sender === 'bot') {
+            const img = document.createElement('img');
+            img.src = 'clarity.JPG';
+            img.alt = 'Clarity AI Assistant';
+            img.className = 'bot-avatar-image';
+            avatar.appendChild(img);
+        } else {
+            const icon = document.createElement('i');
+            icon.className = 'bx bx-user';
+            avatar.appendChild(icon);
+        }
         
         const messageContent = document.createElement('div');
         messageContent.className = 'message-content';
@@ -250,15 +297,9 @@ class Chatbot {
     bindContactFormEvents() {
         const form = document.getElementById('contact-form');
         if (form) {
-            const skipBtn = form.querySelector('.btn-skip');
-            
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.handleContactFormSubmit();
-            });
-            
-            skipBtn.addEventListener('click', () => {
-                this.handleContactFormSkip();
             });
         }
     }
@@ -274,9 +315,11 @@ class Chatbot {
     async handleContactFormSubmit() {
         const nameInput = document.getElementById('contact-name');
         const emailInput = document.getElementById('contact-email');
+        const companyInput = document.getElementById('contact-company');
         
         const name = nameInput.value.trim();
         const email = emailInput.value.trim();
+        const company = companyInput.value.trim();
         
         if (!name || !email) {
             this.showFormError('Please fill in both name and email fields.');
@@ -288,23 +331,80 @@ class Chatbot {
             return;
         }
         
-        // Get client IP
-        const clientIP = await this.getClientIP();
-        
         // Store user data
-        this.userData = { name, email, ip: clientIP };
+        this.userData = { name, email, company, isRegistered: false };
         
-        // Send data to endpoint
-        await this.sendContactData();
-        
-        // Hide form and show success message
-        this.hideContactForm();
-        this.addMessage(`Thank you, ${name}! I've received your information. How can I help you today?`, 'bot');
+        // Make registration API call
+        try {
+            console.log('Starting registration process...');
+            const registrationResult = await this.registerUser();
+            console.log('Registration API call succeeded:', registrationResult);
+            
+            this.userData.isRegistered = true;
+            console.log('User data updated:', this.userData);
+            
+            // Hide form and show success message
+            console.log('Hiding contact form...');
+            this.hideContactForm();
+            
+            console.log('Adding success message...');
+            
+            // Check if the response message contains "Welcome back!" and customize accordingly
+            let successMessage;
+            if (registrationResult && registrationResult.message && registrationResult.message.includes('Welcome back!')) {
+                successMessage = registrationResult.message;
+            } else {
+                successMessage = `Thank you, ${name}! You're now registered and ready to chat. How can I help you today?`;
+            }
+            
+            this.addMessage(successMessage, 'bot');
+            
+            console.log('Registration process completed successfully');
+        } catch (error) {
+            console.error('Registration process failed at step:', error);
+            console.error('Full error details:', error.stack);
+            this.showFormError('Registration failed. Please try again.');
+        }
     }
     
-    handleContactFormSkip() {
-        this.hideContactForm();
-        this.addMessage('No problem! How can I help you today?', 'bot');
+    async registerUser() {
+        const { email, company } = this.userData;
+        let url = `http://127.0.0.1:8000/register?email=${encodeURIComponent(email)}`;
+        
+        if (company) {
+            url += `&company=${encodeURIComponent(company)}`;
+        }
+        
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include'  // Enable cookies for registration
+            });
+            
+            console.log('Registration response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`Registration failed with status: ${response.status}`);
+            }
+            
+            // Try to parse as JSON, but handle if it's not JSON
+            let data;
+            const contentType = response.headers.get('content-type');
+            
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                // If not JSON, get text response
+                data = await response.text();
+            }
+            
+            console.log('Registration successful:', data);
+            return data;
+        } catch (error) {
+            console.error('Registration error details:', error);
+            // Re-throw the error to be caught by handleContactFormSubmit
+            throw error;
+        }
     }
     
     hideContactForm() {
@@ -431,38 +531,6 @@ class Chatbot {
             }, 800);
         }, 1000);
     }
-    
-    // Method to handle demo responses (for testing without API)
-    getDemoResponse(message) {
-        const lowerMessage = message.toLowerCase();
-        
-        // Sample responses based on common questions
-        if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-            return 'Hello! I\'m Amrut\'s AI assistant. How can I help you learn more about him today?';
-        }
-        
-        if (lowerMessage.includes('experience') || lowerMessage.includes('work')) {
-            return 'Amrut has extensive experience as a Web Applications Developer at Media.net (2021-2024), where he built tools for ad campaigns, developed centralized data processors, and worked with technologies like Kafka, Elasticsearch, and Druid. He also has freelance experience in mobile app development and full-stack development.';
-        }
-        
-        if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-            return 'Amrut is skilled in multiple technologies including JavaScript, React, Node.js, Python, Flutter, and various databases. He has experience with cloud platforms, DevOps tools, and modern web development frameworks. His expertise spans from frontend design to backend architecture.';
-        }
-        
-        if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-            return 'You can contact Amrut via email at amrutsavadatti+careers@gmail.com or connect with him on LinkedIn. He\'s always open to discussing new opportunities and collaborations!';
-        }
-        
-        if (lowerMessage.includes('resume') || lowerMessage.includes('cv')) {
-            return 'Amrut\'s resume is available for download on this portfolio. You can view it in the resume section or download it directly. It contains detailed information about his experience, skills, and projects.';
-        }
-        
-        if (lowerMessage.includes('project') || lowerMessage.includes('work')) {
-            return 'Amrut has worked on various projects including ad campaign tools, mobile applications for milk subscription services, e-commerce platforms, and healthcare logistics systems. Each project demonstrates his ability to solve complex problems and deliver scalable solutions.';
-        }
-        
-        return 'That\'s an interesting question! Amrut is a passionate software developer with expertise in web development, mobile apps, and system architecture. Feel free to ask me about his experience, skills, or any specific aspect of his work.';
-    }
 }
 
 // Initialize chatbot when DOM is loaded
@@ -473,7 +541,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chatbot.callAPI = async function(message) {
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-        return this.getDemoResponse(message);
     };
     
     // Make chatbot globally accessible for debugging
