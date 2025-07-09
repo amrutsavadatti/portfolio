@@ -230,15 +230,15 @@ span {
 @keyframes words {
     0%,
     20%{
-        content: "Frontend Designer"
+        content: "Mobile Apps Developer"
     }
     21%,
     40%{
-        content: "Software Developer"
+        content: "Product Developer"
     }
     41%,
     60%{
-        content: "Mobile Apps Developer"
+        content: "Software Developer"
     }
     61%,
     80%{
