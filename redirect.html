@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="3;url=http://44.201.196.10:3000/">
+    <title>Redirecting to Amrut's Portfolio...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .redirect-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 500px;
+            margin: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .redirect-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .redirect-subtext {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .manual-link {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid #ffd700;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .manual-link:hover {
+            background: #ffd700;
+            color: #333;
+        }
+        
+        .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="redirect-text">Redirecting to Amrut's Portfolio</div>
+        <div class="redirect-subtext">Taking you to the latest version of my portfolio...</div>
+        <div class="spinner"></div>
+        <div class="countdown" id="countdown">Redirecting in <span id="timer">3</span> seconds...</div>
+        <a href="http://44.201.196.10:3000/" class="manual-link">Click here if not redirected automatically</a>
+    </div>
+
+    <script>
+        // Immediate redirect (backup)
+        setTimeout(function() {
+            window.location.href = "http://44.201.196.10:3000/";
+        }, 3000);
+
+        // Countdown timer
+        let timeLeft = 3;
+        const timerElement = document.getElementById('timer');
+        const countdown = setInterval(function() {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                document.getElementById('countdown').textContent = "Redirecting now...";
+            }
+        }, 1000);
+
+        // Alternative immediate redirect for faster browsers
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.replace("http://44.201.196.10:3000/");
+            }, 100);
+        }
+    </script>
+</body>
+</html> 
