@@ -1,0 +1,274 @@
+{
+  "companies": [
+    {
+      "id": "medianet",
+      "name": "Media.net",
+      "logo": "https://cdn.brandfetch.io/idXiNMEnI1/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1768204406206",
+      "role": "Web Applications Product Developer",
+      "duration": "August 2021 - May 2024",
+      "type": "Full time",
+      "projects": [
+        {
+          "id": "kafka-keyword-launcher",
+          "name": "Kafka Keyword Launcher API",
+          "shortDescription": "Built a Kafka-based API reducing latency by 35% and enabling real-time keyword analysis",
+          "detailedDescription": "I identified scalability and constant polling issues in the legacy keyword launcher module that were impacting microservice performance.\n\n* Analyzed the system scope by understanding user workflows, data volume, and the lifecycle of keyword and UTM data flowing through the platform.\n* Designed a scalable microservices-based architecture by mapping all major components and their interactions through system design.\n* Implemented MongoDB (NoSQL) to efficiently handle frequently evolving keyword schemas and associated UTM information.\n* Developed a push-based Keyword Launcher API to eliminate dependency on inefficient polling mechanisms.\n* Integrated Kafka with multiple partitions to enable event-driven communication, significantly reducing load on downstream microservices.\n* Used Redis to cache frequently accessed data and optimize response times for high-traffic requests.\n* Built the service using Java, Spring Boot, and Spring Security to automate keyword compliance checks.\n* Deployed the solution on AWS using EKS for container orchestration and scalability.\n* Centralized application logs using Logstash and monitored system health and performance through Grafana dashboards built on key operational metrics.\n* Reduced overall system latency by 35% and enabled real-time analytics through event-driven processing.",
+          "techStack": ["Kafka", "Elasticsearch", "Logstash", "Druid", "Java", "Spring Boot", "Redis"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        },
+        {
+          "id": "arb-plugin",
+          "name": "Arbitrage Plugin",
+          "shortDescription": "Built and maintained a high-traffic arbitrage backend serving 400+ publisher sites, enabling easy-to-launch, data-driven ad campaigns with dynamic configuration, A/B testing, and scalable monetization workflows.",
+          "detailedDescription": "I worked on the core backend of an Arbitrage Plugin that powered monetization for over 400 publisher websites, focusing on reliability, scalability, and ease of campaign execution for non-technical users.\n\n* Maintained and enhanced the core backend services enabling dynamic ad configuration, A/B testing, and click tracking across multiple ad networks to optimize publisher monetization.\n* Built features that allowed campaign managers to launch and manage campaigns effortlessly using multiple ad accounts, configurable rule sets, and dynamic website templating.\n* Enabled rapid deployment of complex 2-click and 3-click campaign flows with minimal manual intervention, significantly reducing campaign setup time.\n* Designed backend workflows that improved experimentation velocity and supported data-driven optimization decisions.\n* Implemented and optimized services using PHP and MySQL to handle high traffic volumes while ensuring accurate attribution and performance tracking.\n* Empowered campaign managers to scale campaigns efficiently, directly contributing to improved monetization outcomes across the publisher network.",
+          "techStack": ["PHP", "Apache2", "Linux", "MySQL"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        },
+        {
+          "id": "api-proxy",
+          "name": "API Proxy Service",
+          "shortDescription": "Created a centralized API Proxy with key management, Dockerization, and caching, saving 25% on API costs",
+          "detailedDescription": "Created a centralized API Proxy Service with key management, Dockerization, and caching, saving 25% on frequent API costs. Created analytical tools for monitoring and reporting on ad campaign performance metrics.",
+          "techStack": ["PHP", "Redis", "CakePHP", "Docker"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        },
+        {
+          "id": "data-pipeline",
+          "name": "Configurable Data Pipeline",
+          "shortDescription": "Developed a pipeline boosting throughput by 60% with real-time ROAS and logging across 30+ APIs",
+          "detailedDescription": "Developed a configurable data pipeline that boosted throughput by 60% and supported real-time ROAS and logging across 30+ APIs.",
+          "techStack": ["Java", "Kafka", "Spring Boot"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        }
+      ]
+    },
+    {
+      "id": "umass",
+      "name": "UMass Dartmouth + WPI",
+      "logo": "https://cdn.brandfetch.io/idc58m61hQ/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1765570754684",
+      "role": "Fullstack Engineer",
+      "duration": "Septener 2025 - Present",
+      "type": "Part time",
+      "projects": [
+        {
+          "id": "beecology",
+          "name": "Beecology Website",
+          "shortDescription": "Modernized and deployed a full-stack ecological research platform by migrating a legacy frontend to React, extending a Flask backend with PostgreSQL, and delivering scalable, Dockerized infrastructure to support large-scale field data collection and analysis.",
+          "detailedDescription": "I took ownership of a legacy frontend application that was constrained by an obsolete and broken Virtual Earth Elevation API dependency, limiting further development and usability fixing current issue and delivering a working solution.\n\n* Led the migration of the frontend from Angular to React.js with Tailwind CSS, significantly improving maintainability, performance, and developer velocity.\n* Extended the existing Flask backend by designing and implementing new RESTful APIs and integrating PostgreSQL for reliable and scalable data persistence.\n* Built high-performance UI components supporting video playback, media uploads, ML-driven species recognition, and interactive map-based data collection workflows.\n* Enabled seamless field data capture for researchers across WPI and UMass Dartmouth by optimizing user experience for real-world research scenarios.\n* Containerized the entire full-stack application using Docker and deployed it to production.\n* Scaled the platform to reliably process and serve over 5,000 field observations per month, capturing elevation, geolocation, and seasonal activity data for bumblebees and butterflies to support ecological and behavioral research.",
+          "techStack": ["Flask", "Docker", "Linux", "Google APIs", "React"],
+          "githubUrl": "",
+          "liveUrl": "https://beecology.wpi.edu/react_webapp/",
+          "screenshots": []
+        }
+      ]
+    },
+    {
+      "id": "wpi-mme",
+      "name": "Worcester Polytechnic Institute MME",
+      "logo": "https://cdn.brandfetch.io/idOBX-qn95/w/399/h/399/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1768746187320",
+      "role": "AI Automation Engineer",
+      "duration": "May 2025 - Jul 2025",
+      "type": "Full time",
+      "projects": [
+        {
+          "id": "n8n-automation",
+          "name": "No-Code Automation Platform",
+          "shortDescription": "Deployed n8n to streamline judge-participant communication, reducing coordination time by 70%",
+          "detailedDescription": "Deployed a no-code automation platform (n8n) to streamline judge-participant communication, reducing coordination time by 70% and sending 800+ personalized emails annually. Integrated OpenAI LLMs for FAQ detection, auto-responses, and context-aware follow-ups in email workflows.",
+          "techStack": ["n8n", "OpenAI", "Python", "Google APIs", "Slack"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        },
+        {
+          "id": "hitl-system",
+          "name": "Human-in-the-Loop Query System",
+          "shortDescription": "Built a system to route unresolved queries to Slack for manual intervention",
+          "detailedDescription": "Built a human-in-the-loop system to route unresolved queries to Slack for manual intervention. Automated extraction and routing of participant data and resource requests to relevant faculty/staff based on context.",
+          "techStack": ["n8n", "Slack API", "OpenAI"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        },
+        {
+          "id": "book-of-abstracts",
+          "name": "Book of Abstracts Generator",
+          "shortDescription": "Generated formatted annual Book of Abstracts from structured data using Python",
+          "detailedDescription": "Generated a formatted annual Book of Abstracts from structured data using Python. Automated creation of Google Forms for judge evaluations with dynamic project assignments, scoring rubrics, and note sections via Python and Google APIs.",
+          "techStack": ["Python", "Google APIs"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        }
+      ]
+    },
+    {
+      "id": "gopalak",
+      "name": "Gopalak Milk",
+      "logo": "logos/gopalak.png",
+      "role": "Mobile App Developer",
+      "duration": "July 2020 - June 2021",
+      "type": "Freelance",
+      "projects": [
+        {
+          "id": "milk-subscription-app",
+          "name": "Milk Subscription Mobile App",
+          "shortDescription": "Designed and developed a Flutter mobile app for milk subscription service",
+          "detailedDescription": "Designed and developed a mobile application using Flutter for milk subscription service. Created an admin dashboard for managing orders, inventory, and customer data. Implemented secure payment gateway integration for subscription management. Designed and optimized database schema for efficient data retrieval and management.",
+          "techStack": ["Flutter", "Dart", "Firebase", "Payment Gateway"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        }
+      ]
+    },
+    {
+      "id": "bhaktivedanta",
+      "name": "Bhaktivedanta Hospital IT",
+      "logo": "https://cdn.brandfetch.io/idwB7hIcxS/w/335/h/100/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1748048251291",
+      "role": "Software Developer",
+      "duration": "December 2019",
+      "type": "Intern",
+      "projects": [
+        {
+          "id": "pharmacy-logistics",
+          "name": "Pharmacy Logistics App",
+          "shortDescription": "Developed a mobile app for tracking, delivering and analyzing pharmacy logistics",
+          "detailedDescription": " * Developed a mobile application to track, manage, and analyze pharmacy logistics operations end to end. \n* Implemented QR code–based authentication to securely verify delivery receipts and reduce manual errors.\n* Designed and maintained an MS SQL database to store daily medicine requests and analyze ordering trends.\n* Improved delivery efficiency by optimizing routing and workflows, reducing delivery times by 37%.\n* Reduced delivery and inventory-related errors by 40% through automation and validation mechanisms.\n* Created analytical reports to monitor medication usage patterns and support inventory optimization decisions.",
+          "techStack": ["Android", "Java", "QR Code", "Firebase", "MS-SQL"],
+          "githubUrl": "https://github.com/amrutsavadatti/BVH-PharmacyApp",
+          "liveUrl": "",
+          "screenshots": []
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "ai-automation",
+      "name": "AI & Automation",
+      "items": [
+        { "name": "Claude Code", "icon": "https://cdn.brandfetch.io/idW5s392j1/w/338/h/338/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1738315794862" },
+        { "name": "OpenAI", "icon": "https://cdn.brandfetch.io/idR3duQxYl/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1749527355219" },
+        { "name": "Langchain", "icon": "https://cdn.brandfetch.io/idzf7Sjo28/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1751438886450" },
+        { "name": "n8n", "icon": "https://cdn.brandfetch.io/idO6_6uqJ9/w/600/h/600/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1763457410569" },
+        { "name": "Make.com", "icon": "https://cdn.brandfetch.io/idVHU5hl7_/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1690469454303" }
+      ]
+    },
+    {
+      "id": "languages",
+      "name": "Languages",
+      "items": [
+        { "name": "Java", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+        { "name": "Python", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+        { "name": "C++", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
+        { "name": "Dart", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" },
+        { "name": "PHP", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
+        { "name": "JavaScript", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
+        { "name": "TypeScript", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
+        { "name": "HTML", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
+        { "name": "CSS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" }
+      ]
+    },
+    {
+      "id": "frameworks",
+      "name": "Frameworks",
+      "items": [
+        { "name": "Spring", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" },
+        { "name": "Django", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" },
+        { "name": "React", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+        { "name": "Next JS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
+        { "name": "Node JS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-line-wordmark.svg" },
+        { "name": "Flutter", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" },
+        { "name": "Android", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-plain.svg" },
+        { "name": "Laravel", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
+        { "name": "Lumen", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lumen/lumen-original.svg" },
+        { "name": "CakePHP", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cakephp/cakephp-original.svg" }
+      ]
+    },
+    {
+      "id": "databases",
+      "name": "Databases",
+      "items": [
+        { "name": "MySQL", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" },
+        { "name": "Microsoft SQL", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original-wordmark.svg" },
+        { "name": "MongoDB", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original-wordmark.svg" },
+        { "name": "Firebase", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" }
+      ]
+    },
+    {
+      "id": "devops-cloud",
+      "name": "DevOps & Cloud",
+      "items": [
+        { "name": "AWS", "icon": "https://cdn.brandfetch.io/idVoqFQ-78/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1691083842143" },
+        { "name": "Docker", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
+        { "name": "ArgoCD", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/argocd/argocd-original.svg" },
+        { "name": "Elasticsearch", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elasticsearch/elasticsearch-original.svg" },
+        { "name": "Logstash", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/logstash/logstash-original.svg" },
+        { "name": "Kibana", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kibana/kibana-original.svg" },
+        { "name": "Redis", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" }
+      ]
+    }
+
+  ],
+  "projects": [
+    {
+      "id": "ai-assistant",
+      "name": "Clarity AI",
+      "shortDescription": "Built an AI-powered portfolio chatbot using Retrieval-Augmented Generation (RAG) to intelligently answer recruiter-specific questions, streamline follow-ups, and showcase projects and skills through a secure, production-deployed full-stack system.",
+      "detailedDescription": "I built an AI-driven portfolio assistant to transform a static portfolio into an interactive, recruiter-focused experience that could answer contextual questions about my background, projects, and technical expertise.\n\n* Designed and implemented a Retrieval-Augmented Generation (RAG) pipeline using LangChain and ChromaDB to ground AI responses in curated portfolio data, ensuring accurate and relevant answers.\n* Developed a FastAPI-based backend integrated with OpenAI APIs to handle recruiter queries with low latency and structured response handling.\n* Vibe-coded and refined the frontend experience to create an engaging, conversational interface tailored for recruiter interactions.\n* Implemented 2FA-verified email capture and integrated Calendly scheduling to streamline recruiter follow-ups and reduce friction in the hiring workflow.\n* Applied per-user rate limiting to protect against API abuse and ensure consistent performance under load.\n* Containerized the full-stack application using Docker Compose and deployed it on AWS EC2 for reliable, production-ready operation.\n* Gained hands-on experience building end-to-end AI systems, deploying secure and scalable infrastructure, and aligning AI capabilities with real-world user needs while delivering a polished, recruiter-friendly product.",
+      "techStack": ["FastAPI", "LangChain", "ChromaDB", "OpenAI API", "AWS EC2"],
+      "githubUrl": "https://github.com/amrutsavadatti/AI-assistant",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
+      "id": "raft",
+      "name": "RAFT consensus algorithm",
+      "shortDescription": "Building a distributed systems project implementing the RAFT consensus algorithm to deeply understand leader election, log replication, and gRPC-based inter-node communication in a fault-tolerant environment.",
+      "detailedDescription": "I am building a distributed systems project to gain a practical, hands-on understanding of the RAFT consensus algorithm and modern RPC-based communication patterns.\n\n* Implemented the core RAFT consensus protocol, focusing on leader election and log replication to ensure consistency across distributed nodes.\n* Used gRPC with Protocol Buffers to enable efficient, strongly typed, low-latency communication between nodes over the network.\n* Built the system using Spring Boot to structure services cleanly and manage node lifecycle and configuration.\n* Exposed REST APIs for node status and health checks, enabling observability and easier debugging of distributed behavior.\n* Containerized each RAFT node and used Docker Compose to spawn and manage multiple nodes running on different ports, simulating a real distributed cluster.\n* Designed RPC flows to handle leader failover and node coordination, reinforcing understanding of fault tolerance and distributed state management.\n* Focused on learning system design trade-offs, networking challenges, and consistency guarantees in distributed systems by implementing the protocol end to end rather than relying on existing libraries.",
+      "techStack": ["Spring Boot", "gRPC", "REST", "Docker Compose", "Java"],
+      "githubUrl": "https://github.com/amrutsavadatti/RAFT-consensus",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
+      "id": "auction-house",
+      "name": "Auction House",
+      "shortDescription": "Designed and delivered a scalable cloud-based auction platform on AWS, combining strong system design principles with team leadership to build a modular, secure, and maintainable application while fostering collaborative team growth.",
+      "detailedDescription": "The Auctionhouse project was a hands-on learning experience focused on building scalable cloud-native systems, making thoughtful architectural trade-offs, and leading a team through the delivery of a deployment-ready application.\n\n* Led the initial system design and architectural planning, selecting AWS services such as S3, RDS, and Lambda and implementing an EBC (Entity–Boundary–Controller) architecture to ensure modularity, clear separation of concerns, and low technical debt.\n* Designed and implemented role-based authentication supporting four distinct user types, enabling secure access control and well-defined responsibilities across the platform.\n* Contributed to building a responsive and performant frontend using Next.js and Tailwind CSS, optimizing client-side rendering to deliver a seamless auction experience.\n* Took ownership of setting technical direction, defining coding standards, and breaking down complex problems into manageable components for the team.\n* Practiced servant leadership by intentionally handing off technical leadership responsibilities to another team member to support their growth, while continuing to contribute as an active team player.\n* Strengthened the team’s overall skill set through shared ownership and collaboration, ensuring long-term maintainability of the system.\n* Gained deep practical experience in cloud-native architecture, scalable system design, and balancing technical leadership with collaborative development, reinforcing the importance of clean design and empowering teammates while delivering robust software.",
+      "techStack": ["AWS", "S3", "Lambda", "RDS", "Route 53", "Next.js"],
+      "githubUrl": "https://github.com/amrutsavadatti/auction_house",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
+      "id": "sylblst",
+      "name": "Syllablast",
+      "shortDescription": "Syllablast is a fun, educational puzzle game built with Next.js, where players swap syllables to form correct words in the fewest number of moves. The game is designed to improve vocabulary, pattern recognition, and problem-solving skills.",
+      "detailedDescription": "Syllablast is a fun, educational puzzle game built with Next.js, where players swap syllables to form correct words in the fewest number of moves. The game is designed to improve vocabulary, pattern recognition, and problem-solving skills.",
+      "techStack": ["Next.js", "Typescript", "CSS"],
+      "githubUrl": "https://github.com/amrutsavadatti/Syllablast",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
+      "id": "mcp",
+      "name": "Custom AI Tool Server ",
+      "shortDescription": "Built a custom AI tool server enabling extensible, secure, and reusable productivity tools through a standardized MCP-based interface, deepening hands-on experience with AI tooling infrastructure and API design.",
+      "detailedDescription": "I designed and implemented a custom AI Tool Server to explore how AI systems can securely and reliably interact with real-world tools through well-defined interfaces.\n\n* Built a custom MCP server in Python using FastAPI as the transport layer and Pydantic for strict schema validation, ensuring robust and predictable tool execution.\n* Used the mcp library’s @server.tool decorator to define extensible and reusable tool endpoints, enabling clean separation between tool definitions and execution logic.\n* Implemented a weather lookup tool integrating third-party APIs to demonstrate real-time external data access.\n* Developed a statistical calculator leveraging NumPy and SciPy to support computational workflows within AI-driven interactions.\n* Integrated Google Calendar with OAuth 2.0 to enable secure, automated event creation and scheduling.\n* Focused on clean API design, extensibility, and security to support future tool additions with minimal refactoring.\n* Gained practical experience in building AI-facing infrastructure, authentication flows, and multi-tool orchestration, strengthening understanding of how modern AI agents interact with external systems in production environments.",
+      "techStack": ["FastAPI", "Pydantic", "MCP Library", "NumPy", "SciPy", "Google Calendar API"],
+      "githubUrl": "",
+      "liveUrl": "",
+      "screenshots": []
+    }
+  ]
+}

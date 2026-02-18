@@ -31,6 +31,7 @@
             <nav class="navbar">
                 <a href="#home">Home</a>
                 <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
                 <a href="#skills">Skills</a>
                 <a href="#resume">Resume</a>
                 <a href="https://github.com/amrutsavadatti" target="_blank"
@@ -57,7 +58,7 @@
                     <a href="https://github.com/amrutsavadatti"
                         ><i class="bx bxl-github"></i
                     ></a>
-                    <a href="mailto:amrutsavadatti+careers@gmail.com"
+                    <a href="mailto:amrutsavadatticareers@gmail.com"
                         ><i class="bx bxs-envelope"></i
                     ></a>
                     <a href="tel:+17745257497"><i class="bx bxs-phone"></i></a>
@@ -65,7 +66,7 @@
 
                 <div class="btn-group">
                     <a
-                        href="mailto:amrutsavadatti+careers@gmail.com"
+                        href="mailto:amrutsavadatticareers@gmail.com"
                         class="btn"
                         >Contact</a
                     >
@@ -74,7 +75,7 @@
             <div>
                 <div class="home-img">
                     <a href="#contact">
-                        <img src="profile-pic4.png" href="#contact" alt="" />
+                        <img src="profile.png" href="#contact" alt="" />
                     </a>
                 </div>
             </div>
@@ -83,526 +84,63 @@
         <section class="experience" id="experience">
             <h2 class="heading" id="head">Experience</h2>
 
-            <div class="timeline-items" id="timeline-items">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
+            <!-- Loading State -->
+            <div id="exp-loading" class="exp-loading">
+                <div class="exp-spinner"></div>
+                <p>Loading experience data...</p>
+            </div>
 
-                    <div class="timeline-date">May 2025 - Jul 2025</div>
-                    <div class="timeline-content">
-                        <h3>
-                            AI Automation Engineer
-                            <span class="sub-header">Full time</span>
-                        </h3>
-                        <h2 class="company">
-                            Worcester Polytechnic Institute MME
-                        </h2>
-                        <ul>
-                            <li>
-                                Deployed a no-code automation platform (n8n) to
-                                streamline judge-participant communication,
-                                reducing coordination time by 70% and sending
-                                800+ personalized emails annually
-                            </li>
-                            <li>
-                                Integrated OpenAI LLMs for FAQ detection,
-                                auto-responses, and context-aware follow-ups in
-                                email workflows
-                            </li>
-                            <li>
-                                Built a human-in-the-loop system to route
-                                unresolved queries to Slack for manual
-                                intervention
-                            </li>
-                            <li>
-                                Automated extraction and routing of participant
-                                data and resource requests to relevant
-                                faculty/staff based on context
-                            </li>
-                            <li>
-                                Generated a formatted annual Book of Abstracts
-                                from structured data using Python
-                            </li>
-                            <li>
-                                Automated creation of Google Forms for judge
-                                evaluations with dynamic project assignments,
-                                scoring rubrics, and note sections via Python
-                                and Google APIs
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- Error State -->
+            <div id="exp-error" class="exp-error" style="display: none;">
+                <i class="bx bx-error-circle"></i>
+                <p>Failed to load experience data.</p>
+                <button class="btn" id="exp-retry-btn">Retry</button>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
+            <!-- View 1: Company Tiles Grid -->
+            <div id="exp-companies" class="exp-companies" style="display: none;">
+                <div class="exp-tiles-grid" id="exp-tiles-grid"></div>
+            </div>
 
-                    <div class="timeline-date">August 2021 - May 2024</div>
-                    <div class="timeline-content">
-                        <h3>
-                            Web Applications Product Developer
-                            <span class="sub-header">Full time</span>
-                        </h3>
-                        <h2 class="company">Media.net</h2>
-                        <ul>
-                            <li>
-                                Built a Kafka-based Keyword Launcher API
-                                reducing latency by 35% and enabling real-time
-                                keyword analysis
-                            </li>
-                            <li>
-                                Developed a configurable data pipeline that
-                                boosted throughput by 60% and supported
-                                real-time ROAS and logging across 30+ APIs
-                            </li>
-                            <li>
-                                Created a centralized API Proxy Service with key
-                                management, Dockerization, and caching, saving
-                                25% on frequent API costs
-                            </li>
-                            <li>
-                                Utilized Kafka, Elasticsearch, Logstash, and
-                                Druid to optimize API performance for
-                                large-scale streaming data
-                            </li>
-                            <li>
-                                Created analytical tools for monitoring and
-                                reporting on ad campaign performance metrics
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- View 2: Company Detail -->
+            <div id="exp-company-detail" class="exp-company-detail" style="display: none;">
+                <button class="exp-back-btn" id="exp-back-to-companies">
+                    <i class="bx bx-arrow-back"></i> All Companies
+                </button>
+                <div class="exp-company-header" id="exp-company-header"></div>
+                <div class="exp-projects-grid" id="exp-projects-grid"></div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">July 2020 - June 2021</div>
-                    <div class="timeline-content">
-                        <h3>
-                            Mobile App Developer
-                            <span class="sub-header"> Freelance </span>
-                        </h3>
-                        <h2 class="company">Gopalak Milk</h2>
-                        <ul>
-                            <li>
-                                Designed and developed a mobile application
-                                using Flutter for milk subscription service
-                            </li>
-                            <li>
-                                Created an admin dashboard for managing orders,
-                                inventory, and customer data
-                            </li>
-                            <li>
-                                Implemented secure payment gateway integration
-                                for subscription management
-                            </li>
-                            <li>
-                                Designed and optimized database schema for
-                                efficient data retrieval and management
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- View 3: Project Detail -->
+            <div id="exp-project-detail" class="exp-project-detail" style="display: none;">
+                <button class="exp-back-btn" id="exp-back-to-company">
+                    <i class="bx bx-arrow-back"></i> Back to Projects
+                </button>
+                <div class="exp-project-content" id="exp-project-content"></div>
+            </div>
+        </section>
 
-                <!-- <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">May 2020</div>
-                <div class="timeline-content">
-                    <h3>Fullstack Developer <span class="sub-header"> Freelance </span></h3>
-                    <h2 class="company" >ShetkariRaja</h2>
-                    <ul>
-                        <li>Built an e-commerce website for selling fresh produce using Strapi and React</li>
-                        <li>Integrated Freecharge payment gateway for secure online transactions</li>
-                        <li>Customized the theme and user interface for improved customer experience</li>
-                        <li>Implemented inventory management system for tracking product availability</li>
-                        <li>Created responsive design for optimal viewing on all devices</li>
-                    </ul>
-                </div>
-            </div> -->
+        <section class="projects" id="projects">
+            <h2 class="heading">Projects</h2>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">December 2019</div>
-                    <div class="timeline-content">
-                        <h3>
-                            Software Developer
-                            <span class="sub-header"> Intern </span>
-                        </h3>
-                        <h2 class="company">
-                            Bhaktivedanta Hospital IT department
-                        </h2>
-                        <ul>
-                            <li>
-                                Developed a mobile application for tracking,
-                                delivering and analyzing pharmacy logistics
-                            </li>
-                            <li>
-                                Implemented QR based authentication for delivery
-                                receipts
-                            </li>
-                            <li>
-                                Optimized delivery times by 37% and reduced
-                                errors by 40%
-                            </li>
-                            <li>
-                                Designed reports for analyzing medication usage
-                                patterns and optimizing inventory
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- View 1: Project Tiles Grid -->
+            <div id="proj-tiles" class="proj-tiles">
+                <div class="proj-tiles-grid" id="proj-tiles-grid"></div>
+            </div>
 
-                <!-- <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">June 2019</div>
-                <div class="timeline-content">
-                    <h3>Web Developer <span class="sub-header"> Intern </span></h3>
-                    <h2 class="company" >ValueFin</h2>
-                    <ul>
-                        <li>Built and maintained portfolio website showcasing company services and products</li>
-                        <li>Developed a blog platform for publishing financial insights and market analysis</li>
-                        <li>Implemented SEO optimization techniques to improve search engine visibility</li>
-                        <li>Created responsive design to ensure compatibility across all devices</li>
-                    </ul>
-                </div>
-            </div> -->
+            <!-- View 2: Project Detail -->
+            <div id="proj-detail" class="proj-detail" style="display: none;">
+                <button class="exp-back-btn" id="proj-back-btn">
+                    <i class="bx bx-arrow-back"></i> All Projects
+                </button>
+                <div class="proj-detail-content" id="proj-detail-content"></div>
             </div>
         </section>
 
         <section class="skills" id="skills">
             <h2 class="heading">Skills</h2>
 
-            <div class="all_skills">
-                <div class="one_skill">
-                    <div class="skill_name">
-                        <h3 class="skillHeader">Languages</h3>
-                    </div>
-                    <div class="parentSkills_1">
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg"
-                                />
-                                <h3>C</h3>
-                            </div>
-                        </div>
-                        <div class="div2">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
-                                />
-                                <h3>Java</h3>
-                            </div>
-                        </div>
-                        <div class="div3">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
-                                />
-                                <h3>C++</h3>
-                            </div>
-                        </div>
-                        <div class="div4">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg"
-                                />
-                                <h3>Dart</h3>
-                            </div>
-                        </div>
-                        <div class="div5">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
-                                />
-                                <h3>Python</h3>
-                            </div>
-                        </div>
-                        <div class="div6">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg"
-                                />
-                                <h3>PHP</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="one_skill">
-                    <div class="skill_name">
-                        <h3 class="skillHeader">Frameworks</h3>
-                    </div>
-                    <div class="parentSkills_2">
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg"
-                                />
-                                <h3>Spring</h3>
-                            </div>
-                        </div>
-                        <div class="div2">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
-                                />
-                                <h3>Django</h3>
-                            </div>
-                        </div>
-                        <div class="div3">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
-                                />
-                                <h3>React</h3>
-                            </div>
-                        </div>
-                        <div class="div4">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-line-wordmark.svg"
-                                />
-                                <h3>Node JS</h3>
-                            </div>
-                        </div>
-                        <div class="div5">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg"
-                                />
-                                <h3>Flutter</h3>
-                            </div>
-                        </div>
-                        <div class="div6">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-plain.svg"
-                                />
-                                <h3>Android</h3>
-                            </div>
-                        </div>
-                        <div class="div7">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"
-                                />
-                                <h3>Next JS</h3>
-                            </div>
-                        </div>
-                        <div class="div8">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg"
-                                />
-                                <h3>Laravel</h3>
-                            </div>
-                        </div>
-                        <div class="div9">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lumen/lumen-original.svg"
-                                />
-                                <h3>Lumen</h3>
-                            </div>
-                        </div>
-                        <div class="div10">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cakephp/cakephp-original.svg"
-                                />
-                                <h3>CakePHP</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="one_skill">
-                    <div class="skill_name">
-                        <h3 class="skillHeader">Web Technologies</h3>
-                    </div>
-                    <div class="parentSkills_3">
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
-                                />
-                                <h3>HTML</h3>
-                            </div>
-                        </div>
-                        <div class="div2">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
-                                />
-                                <h3>CSS</h3>
-                            </div>
-                        </div>
-                        <div class="div3">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
-                                />
-                                <h3>JS</h3>
-                            </div>
-                        </div>
-                        <div class="div4">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"
-                                />
-                                <h3>Typescript</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="one_skill">
-                    <div class="skill_name">
-                        <h3 class="skillHeader">Data Bases</h3>
-                    </div>
-                    <div class="parentSkills_4">
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg"
-                                />
-                                <h3>MySQL</h3>
-                            </div>
-                        </div>
-                        <div class="div2">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original-wordmark.svg"
-                                />
-                                <h3>MicrosoftSql</h3>
-                            </div>
-                        </div>
-                        <div class="div3">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original-wordmark.svg"
-                                />
-                                <h3>MongoDB</h3>
-                            </div>
-                        </div>
-                        <div class="div4">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg"
-                                />
-                                <h3>Firebase</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="one_skill">
-                    <div class="skill_name">
-                        <h3 class="skillHeader">Technologies</h3>
-                    </div>
-                    <div class="parentSkills_1">
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.brandfetch.io/idVoqFQ-78/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1691083842143"
-                                />
-                                <h3>AWS</h3>
-                            </div>
-                        </div>
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elasticsearch/elasticsearch-original.svg"
-                                />
-                                <h3>Elasticsearch</h3>
-                            </div>
-                        </div>
-                        <div class="div2">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/logstash/logstash-original.svg"
-                                />
-                                <h3>Logstash</h3>
-                            </div>
-                        </div>
-                        <div class="div3">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kibana/kibana-original.svg"
-                                />
-                                <h3>Kibana</h3>
-                            </div>
-                        </div>
-                        <div class="div4">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg"
-                                />
-                                <h3>Redis</h3>
-                            </div>
-                        </div>
-                        <div class="div5">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg"
-                                />
-                                <h3>Docker</h3>
-                            </div>
-                        </div>
-                        <div class="div6">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/argocd/argocd-original.svg"
-                                />
-                                <h3>ArgoCD</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="one_skill">
-                    <div class="skill_name">
-                        <h3 class="skillHeader">AI Technologies</h3>
-                    </div>
-                    <div class="parentSkills_5">
-                        <div class="div1">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.brandfetch.io/idR3duQxYl/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1749527355219"
-                                    onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg'; this.onerror=null;"
-                                />
-                                <h3>OpenAI</h3>
-                            </div>
-                        </div>
-                        <div class="div2">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.brandfetch.io/idzf7Sjo28/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1751438886450"
-                                    style="filter: invert(1)"
-                                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMgN0w5IDNMMTUgN0wyMSAzVjE3TDE1IDIxTDkgMTdMMyAyMVY3WiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+'; this.onerror=null;"
-                                />
-                                <h3>Langchain</h3>
-                            </div>
-                        </div>
-                        <div class="div4">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.brandfetch.io/id7gN4JouK/w/260/h/260/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1751031787055"
-                                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4K'; this.onerror=null;"
-                                />
-                                <h3>n8n</h3>
-                            </div>
-                        </div>
-                        <div class="div5">
-                            <div class="childSkill">
-                                <img
-                                    src="https://cdn.brandfetch.io/idVHU5hl7_/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1690469454303"
-                                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTQuNSA3SDIwTDE2IDEyTDE4LjUgMjJIMTJMOS41IDIyTDEyIDEySCA4TDkuNSA3SDEyVjJaIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4K'; this.onerror=null;"
-                                />
-                                <h3>Make.com</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="skills-grid" class="skills-grid"></div>
         </section>
 
         <section class="resume" id="resume">
@@ -678,17 +216,19 @@
                 <p class="cta-text">
                     Ready to add a reliable developer to your team?
                 </p>
-                <a href="mailto:amrutsavadatti+careers@gmail.com" class="btn"
+                <a href="mailto:amrutsavadatticareers@gmail.com" class="btn"
                     >Hire Me</a
                 >
             </div>
         </section>
 
-        <section class="end">
-            <h2 class="heading" id="head">Thats about it !</h2>
-            <!-- <img src="mic_drop.png" alt="" id="mic"> -->
-            <a href="#home"><h3 class="back-link" id="head">Back to top</h3></a>
-        </section>
+        <footer class="end">
+            <div class="end-fade"></div>
+            <div class="end-content">
+                <h2 class="heading">Thats about it !</h2>
+                <a href="#home"><h3 class="back-link">Back to top</h3></a>
+            </div>
+        </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
         <script
