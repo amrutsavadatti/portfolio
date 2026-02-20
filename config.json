@@ -13,7 +13,15 @@
           "name": "Kafka Keyword Launcher API",
           "shortDescription": "Built a Kafka-based API reducing latency by 35% and enabling real-time keyword analysis",
           "detailedDescription": "I identified scalability and constant polling issues in the legacy keyword launcher module that were impacting microservice performance.\n\n* Analyzed the system scope by understanding user workflows, data volume, and the lifecycle of keyword and UTM data flowing through the platform.\n* Designed a scalable microservices-based architecture by mapping all major components and their interactions through system design.\n* Implemented MongoDB (NoSQL) to efficiently handle frequently evolving keyword schemas and associated UTM information.\n* Developed a push-based Keyword Launcher API to eliminate dependency on inefficient polling mechanisms.\n* Integrated Kafka with multiple partitions to enable event-driven communication, significantly reducing load on downstream microservices.\n* Used Redis to cache frequently accessed data and optimize response times for high-traffic requests.\n* Built the service using Java, Spring Boot, and Spring Security to automate keyword compliance checks.\n* Deployed the solution on AWS using EKS for container orchestration and scalability.\n* Centralized application logs using Logstash and monitored system health and performance through Grafana dashboards built on key operational metrics.\n* Reduced overall system latency by 35% and enabled real-time analytics through event-driven processing.",
-          "techStack": ["Kafka", "Elasticsearch", "Logstash", "Druid", "Java", "Spring Boot", "Redis"],
+          "techStack": [
+            "Kafka",
+            "Elasticsearch",
+            "Logstash",
+            "Druid",
+            "Java",
+            "Spring Boot",
+            "Redis"
+          ],
           "githubUrl": "",
           "liveUrl": "",
           "screenshots": []
@@ -156,68 +164,172 @@
       "id": "ai-automation",
       "name": "AI & Automation",
       "items": [
-        { "name": "Claude Code", "icon": "https://cdn.brandfetch.io/idW5s392j1/w/338/h/338/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1738315794862" },
-        { "name": "OpenAI", "icon": "https://cdn.brandfetch.io/idR3duQxYl/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1749527355219" },
-        { "name": "Langchain", "icon": "https://cdn.brandfetch.io/idzf7Sjo28/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1751438886450" },
-        { "name": "n8n", "icon": "https://cdn.brandfetch.io/idO6_6uqJ9/w/600/h/600/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1763457410569" },
-        { "name": "Make.com", "icon": "https://cdn.brandfetch.io/idVHU5hl7_/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1690469454303" }
+        {
+          "name": "Claude Code",
+          "icon": "https://cdn.brandfetch.io/idW5s392j1/w/338/h/338/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1738315794862"
+        },
+        {
+          "name": "OpenAI",
+          "icon": "https://cdn.brandfetch.io/idR3duQxYl/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1749527355219"
+        },
+        {
+          "name": "Langchain",
+          "icon": "https://cdn.brandfetch.io/idzf7Sjo28/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1751438886450"
+        },
+        {
+          "name": "n8n",
+          "icon": "https://cdn.brandfetch.io/idO6_6uqJ9/w/600/h/600/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1763457410569"
+        },
+        {
+          "name": "Make.com",
+          "icon": "https://cdn.brandfetch.io/idVHU5hl7_/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1690469454303"
+        }
       ]
     },
     {
       "id": "languages",
       "name": "Languages",
       "items": [
-        { "name": "Java", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
-        { "name": "Python", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
-        { "name": "C++", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
-        { "name": "Dart", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" },
-        { "name": "PHP", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
-        { "name": "JavaScript", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
-        { "name": "TypeScript", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
-        { "name": "HTML", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
-        { "name": "CSS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" }
+        {
+          "name": "Java",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
+        },
+        {
+          "name": "Python",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+        },
+        {
+          "name": "C++",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
+        },
+        {
+          "name": "Dart",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg"
+        },
+        {
+          "name": "PHP",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+        },
+        {
+          "name": "TypeScript",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"
+        },
+        {
+          "name": "HTML",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+        },
+        {
+          "name": "CSS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
+        }
       ]
     },
     {
       "id": "frameworks",
       "name": "Frameworks",
       "items": [
-        { "name": "Spring", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" },
-        { "name": "Django", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" },
-        { "name": "React", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
-        { "name": "Next JS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
-        { "name": "Node JS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-line-wordmark.svg" },
-        { "name": "Flutter", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" },
-        { "name": "Android", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-plain.svg" },
-        { "name": "Laravel", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
-        { "name": "Lumen", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lumen/lumen-original.svg" },
-        { "name": "CakePHP", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cakephp/cakephp-original.svg" }
+        {
+          "name": "Spring",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg"
+        },
+        {
+          "name": "Django",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
+        },
+        {
+          "name": "React",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
+        },
+        {
+          "name": "Next JS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"
+        },
+        {
+          "name": "Node JS",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-line-wordmark.svg"
+        },
+        {
+          "name": "Flutter",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg"
+        },
+        {
+          "name": "Android",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-plain.svg"
+        },
+        {
+          "name": "Laravel",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg"
+        },
+        {
+          "name": "Lumen",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lumen/lumen-original.svg"
+        },
+        {
+          "name": "CakePHP",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cakephp/cakephp-original.svg"
+        }
       ]
     },
     {
       "id": "databases",
       "name": "Databases",
       "items": [
-        { "name": "MySQL", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" },
-        { "name": "Microsoft SQL", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original-wordmark.svg" },
-        { "name": "MongoDB", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original-wordmark.svg" },
-        { "name": "Firebase", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" }
+        {
+          "name": "MySQL",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg"
+        },
+        {
+          "name": "Microsoft SQL",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original-wordmark.svg"
+        },
+        {
+          "name": "MongoDB",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original-wordmark.svg"
+        },
+        {
+          "name": "Firebase",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg"
+        }
       ]
     },
     {
       "id": "devops-cloud",
       "name": "DevOps & Cloud",
       "items": [
-        { "name": "AWS", "icon": "https://cdn.brandfetch.io/idVoqFQ-78/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1691083842143" },
-        { "name": "Docker", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
-        { "name": "ArgoCD", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/argocd/argocd-original.svg" },
-        { "name": "Elasticsearch", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elasticsearch/elasticsearch-original.svg" },
-        { "name": "Logstash", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/logstash/logstash-original.svg" },
-        { "name": "Kibana", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kibana/kibana-original.svg" },
-        { "name": "Redis", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" }
+        {
+          "name": "AWS",
+          "icon": "https://cdn.brandfetch.io/idVoqFQ-78/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1691083842143"
+        },
+        {
+          "name": "Docker",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg"
+        },
+        {
+          "name": "ArgoCD",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/argocd/argocd-original.svg"
+        },
+        {
+          "name": "Elasticsearch",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elasticsearch/elasticsearch-original.svg"
+        },
+        {
+          "name": "Logstash",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/logstash/logstash-original.svg"
+        },
+        {
+          "name": "Kibana",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kibana/kibana-original.svg"
+        },
+        {
+          "name": "Redis",
+          "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg"
+        }
       ]
     }
-
   ],
   "projects": [
     {
@@ -225,7 +337,13 @@
       "name": "Clarity AI",
       "shortDescription": "Built an AI-powered portfolio chatbot using Retrieval-Augmented Generation (RAG) to intelligently answer recruiter-specific questions, streamline follow-ups, and showcase projects and skills through a secure, production-deployed full-stack system.",
       "detailedDescription": "I built an AI-driven portfolio assistant to transform a static portfolio into an interactive, recruiter-focused experience that could answer contextual questions about my background, projects, and technical expertise.\n\n* Designed and implemented a Retrieval-Augmented Generation (RAG) pipeline using LangChain and ChromaDB to ground AI responses in curated portfolio data, ensuring accurate and relevant answers.\n* Developed a FastAPI-based backend integrated with OpenAI APIs to handle recruiter queries with low latency and structured response handling.\n* Vibe-coded and refined the frontend experience to create an engaging, conversational interface tailored for recruiter interactions.\n* Implemented 2FA-verified email capture and integrated Calendly scheduling to streamline recruiter follow-ups and reduce friction in the hiring workflow.\n* Applied per-user rate limiting to protect against API abuse and ensure consistent performance under load.\n* Containerized the full-stack application using Docker Compose and deployed it on AWS EC2 for reliable, production-ready operation.\n* Gained hands-on experience building end-to-end AI systems, deploying secure and scalable infrastructure, and aligning AI capabilities with real-world user needs while delivering a polished, recruiter-friendly product.",
-      "techStack": ["FastAPI", "LangChain", "ChromaDB", "OpenAI API", "AWS EC2"],
+      "techStack": [
+        "FastAPI",
+        "LangChain",
+        "ChromaDB",
+        "OpenAI API",
+        "AWS EC2"
+      ],
       "githubUrl": "https://github.com/amrutsavadatti/AI-assistant",
       "liveUrl": "",
       "screenshots": []
@@ -234,10 +352,17 @@
       "id": "raft",
       "name": "RAFT consensus algorithm",
       "shortDescription": "Building a distributed systems project implementing the RAFT consensus algorithm to deeply understand leader election, log replication, and gRPC-based inter-node communication in a fault-tolerant environment.",
-      "detailedDescription": "I am building a distributed systems project to gain a practical, hands-on understanding of the RAFT consensus algorithm and modern RPC-based communication patterns.\n\n* Implemented the core RAFT consensus protocol, focusing on leader election and log replication to ensure consistency across distributed nodes.\n* Used gRPC with Protocol Buffers to enable efficient, strongly typed, low-latency communication between nodes over the network.\n* Built the system using Spring Boot to structure services cleanly and manage node lifecycle and configuration.\n* Exposed REST APIs for node status and health checks, enabling observability and easier debugging of distributed behavior.\n* Containerized each RAFT node and used Docker Compose to spawn and manage multiple nodes running on different ports, simulating a real distributed cluster.\n* Designed RPC flows to handle leader failover and node coordination, reinforcing understanding of fault tolerance and distributed state management.\n* Focused on learning system design trade-offs, networking challenges, and consistency guarantees in distributed systems by implementing the protocol end to end rather than relying on existing libraries.",
-      "techStack": ["Spring Boot", "gRPC", "REST", "Docker Compose", "Java"],
+      "detailedDescription": "<b>S</b> I was learning Kubernetes in depth and discovered that it uses the RAFT consensus algorithm internally for coordination and fault tolerance. That made distributed consensus feel abstract but clearly foundational, so I wanted to understand it by building it hands on.\n\n<b>T</b> I set out to build a RAFT based distributed system from scratch as a learning focused project, so I could observe leader changes, replication, and recovery instead of treating consensus like a black box.\n\n<b>A</b>\n* Phase 1: Built a Spring Boot and gRPC skeleton and containerized it with Docker to run multiple nodes locally like a small cluster.\n* Phase 2: Implemented leader election with terms, voting, and heartbeats to understand how a leader is chosen and maintained.\n* Phase 3: Implemented log replication to learn how distributed nodes stay consistent over time.\n* Phase 4: Ran fault tolerance tests by simulating node crashes and restarts to validate leader failover and recovery behavior.\n* Phase 5: Built a frontend visualization to make cluster state, leader status, and log progress easy to observe.\n* Phase 6: Replaced REST polling with WebSocket live push for real time updates and a more responsive system view.\n\n<b>R</b> The result is a demoable RAFT cluster with a clear visualization and real failure scenarios, which gave me practical intuition for how Kubernetes style systems maintain consistency and resilience.",
+      "techStack": [
+        "Spring Boot",
+        "gRPC",
+        "REST",
+        "Websockets",
+        "Docker Compose",
+        "Java"
+      ],
       "githubUrl": "https://github.com/amrutsavadatti/RAFT-consensus",
-      "liveUrl": "",
+      "liveUrl": "https://www.youtube.com/watch?v=O5GhTJy6ZoI",
       "screenshots": []
     },
     {
@@ -265,7 +390,14 @@
       "name": "Custom AI Tool Server ",
       "shortDescription": "Built a custom AI tool server enabling extensible, secure, and reusable productivity tools through a standardized MCP-based interface, deepening hands-on experience with AI tooling infrastructure and API design.",
       "detailedDescription": "I designed and implemented a custom AI Tool Server to explore how AI systems can securely and reliably interact with real-world tools through well-defined interfaces.\n\n* Built a custom MCP server in Python using FastAPI as the transport layer and Pydantic for strict schema validation, ensuring robust and predictable tool execution.\n* Used the mcp library’s @server.tool decorator to define extensible and reusable tool endpoints, enabling clean separation between tool definitions and execution logic.\n* Implemented a weather lookup tool integrating third-party APIs to demonstrate real-time external data access.\n* Developed a statistical calculator leveraging NumPy and SciPy to support computational workflows within AI-driven interactions.\n* Integrated Google Calendar with OAuth 2.0 to enable secure, automated event creation and scheduling.\n* Focused on clean API design, extensibility, and security to support future tool additions with minimal refactoring.\n* Gained practical experience in building AI-facing infrastructure, authentication flows, and multi-tool orchestration, strengthening understanding of how modern AI agents interact with external systems in production environments.",
-      "techStack": ["FastAPI", "Pydantic", "MCP Library", "NumPy", "SciPy", "Google Calendar API"],
+      "techStack": [
+        "FastAPI",
+        "Pydantic",
+        "MCP Library",
+        "NumPy",
+        "SciPy",
+        "Google Calendar API"
+      ],
       "githubUrl": "",
       "liveUrl": "",
       "screenshots": []
