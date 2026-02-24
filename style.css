@@ -1123,7 +1123,7 @@ span {
     left: 0;
     width: 100%;
     height: 40%;
-    background: linear-gradient(to bottom, var(--second-bg-color) 0%, transparent 100%);
+    background: linear-gradient(to bottom, var(--bg-color) 0%, transparent 100%);
     pointer-events: none;
     z-index: 1;
 }
@@ -1467,7 +1467,7 @@ span {
 
 /* Resume Section Styles */
 .resume {
-    background: var(--bg-color);
+    background: var(--second-bg-color);
 }
 
 .resume-container {
@@ -1607,7 +1607,7 @@ span {
 
 /* Joke Section Styles */
 .joke {
-    background: var(--second-bg-color);
+    background: var(--bg-color);
     padding: 10rem 12% 10rem;
 }
 
