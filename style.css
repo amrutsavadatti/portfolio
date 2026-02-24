@@ -1335,6 +1335,136 @@ span {
 
 /* 20:24 https://www.youtube.com/watch?v=UqHILyzcULE */
 
+/* Education Section */
+.education {
+    padding: 10rem 12% 10rem;
+    background: var(--bg-color);
+}
+
+.education h2 {
+    margin-bottom: 5rem;
+}
+
+.edu-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 3rem;
+}
+
+.edu-card {
+    background-color: var(--second-bg-color);
+    border: 3px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(var(--main-color-rgb), 0.2);
+    animation: exp-fadeIn 0.5s ease forwards;
+    opacity: 0;
+    gap: 1rem;
+}
+
+.edu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 25px var(--main-color);
+}
+
+.edu-card-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 5px var(--main-color));
+}
+
+.edu-card-logo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--bg-color);
+    margin-bottom: 0.5rem;
+}
+
+.edu-card h3 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.edu-card h4 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--main-color);
+}
+
+.edu-card-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.edu-card-duration {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+.edu-card-location {
+    font-size: 1.3rem;
+    color: var(--text-color);
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.edu-card-location i {
+    font-size: 1.5rem;
+}
+
+.edu-card-gpa {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--trim-color);
+}
+
+.edu-card-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .edu-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .edu-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .edu-card h3 {
+        font-size: 1.9rem;
+    }
+}
+
 /* Resume Section Styles */
 .resume {
     background: var(--bg-color);

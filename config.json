@@ -331,6 +331,40 @@
       ]
     }
   ],
+  "education": [
+    {
+      "id": "wpi-ms",
+      "institution": "Worcester Polytechnic Institute",
+      "logo": "https://cdn.brandfetch.io/idOBX-qn95/w/399/h/399/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1768746187320",
+      "degree": "Master of Science",
+      "field": "Computer Science",
+      "duration": "2024 - 2026",
+      "gpa": "",
+      "location": "Worcester, MA",
+      "highlights": [
+        "Distributed Systems",
+        "Artificial Intelligence",
+        "Cloud Computing",
+        "Machine Learning"
+      ]
+    },
+    {
+      "id": "undergrad",
+      "institution": "University of Mumbai",
+      "logo": "https://mum.digitaluniversity.ac/user/pages/images/logo_university-of-mumbai.jpg",
+      "degree": "Bachelor of Engineering",
+      "field": "Computer Engineering",
+      "duration": "2017 - 2021",
+      "gpa": "",
+      "location": "Mumbai, India",
+      "highlights": [
+        "Data Structures & Algorithms",
+        "Operating Systems",
+        "Database Management",
+        "Computer Networks"
+      ]
+    }
+  ],
   "projects": [
     {
       "id": "ai-assistant",
@@ -352,7 +386,7 @@
       "id": "raft",
       "name": "RAFT consensus algorithm",
       "shortDescription": "Building a distributed systems project implementing the RAFT consensus algorithm to deeply understand leader election, log replication, and gRPC-based inter-node communication in a fault-tolerant environment.",
-      "detailedDescription": "<b>S</b> I was learning Kubernetes in depth and discovered that it uses the RAFT consensus algorithm internally for coordination and fault tolerance. That made distributed consensus feel abstract but clearly foundational, so I wanted to understand it by building it hands on.\n\n<b>T</b> I set out to build a RAFT based distributed system from scratch as a learning focused project, so I could observe leader changes, replication, and recovery instead of treating consensus like a black box.\n\n<b>A</b>\n* Phase 1: Built a Spring Boot and gRPC skeleton and containerized it with Docker to run multiple nodes locally like a small cluster.\n* Phase 2: Implemented leader election with terms, voting, and heartbeats to understand how a leader is chosen and maintained.\n* Phase 3: Implemented log replication to learn how distributed nodes stay consistent over time.\n* Phase 4: Ran fault tolerance tests by simulating node crashes and restarts to validate leader failover and recovery behavior.\n* Phase 5: Built a frontend visualization to make cluster state, leader status, and log progress easy to observe.\n* Phase 6: Replaced REST polling with WebSocket live push for real time updates and a more responsive system view.\n\n<b>R</b> The result is a demoable RAFT cluster with a clear visualization and real failure scenarios, which gave me practical intuition for how Kubernetes style systems maintain consistency and resilience.",
+      "detailedDescription": "  I was learning Kubernetes in depth and discovered that it uses the RAFT consensus algorithm internally for coordination and fault tolerance. That made distributed consensus feel abstract but clearly foundational, so I wanted to understand it by building it hands on.\n\n I set out to build a RAFT based distributed system from scratch as a learning focused project, so I could observe leader changes, replication, and recovery instead of treating consensus like a black box.\n\n\n* Phase 1: Built a Spring Boot and gRPC skeleton and containerized it with Docker to run multiple nodes locally like a small cluster.\n* Phase 2: Implemented leader election with terms, voting, and heartbeats to understand how a leader is chosen and maintained.\n* Phase 3: Implemented log replication to learn how distributed nodes stay consistent over time.\n* Phase 4: Ran fault tolerance tests by simulating node crashes and restarts to validate leader failover and recovery behavior.\n* Phase 5: Built a frontend visualization to make cluster state, leader status, and log progress easy to observe.\n* Phase 6: Replaced REST polling with WebSocket live push for real time updates and a more responsive system view.\n\n The result is a demoable RAFT cluster with a clear visualization and real failure scenarios, which gave me practical intuition for how Kubernetes style systems maintain consistency and resilience.",
       "techStack": [
         "Spring Boot",
         "gRPC",

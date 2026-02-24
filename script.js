@@ -463,6 +463,90 @@ document.querySelectorAll('.navbar a').forEach(link => {
         }
     }
 
+    // ============================================================
+    // Education Section
+    // ============================================================
+    function renderEducation(data) {
+        var grid = document.getElementById('edu-grid');
+        if (!grid || !data.education) return;
+
+        grid.innerHTML = '';
+        data.education.forEach(function (edu, index) {
+            var card = document.createElement('div');
+            card.className = 'edu-card';
+            card.style.animationDelay = (index * 0.1) + 's';
+
+            // Logo
+            var logoEl = createLogo(edu.logo, edu.institution, 'edu-card-logo');
+            card.appendChild(logoEl);
+
+            // Institution
+            var h3 = document.createElement('h3');
+            h3.textContent = edu.institution;
+            card.appendChild(h3);
+
+            // Degree + Field
+            var h4 = document.createElement('h4');
+            h4.textContent = edu.degree + (edu.field ? ' · ' + edu.field : '');
+            card.appendChild(h4);
+
+            // Duration + Location
+            var meta = document.createElement('div');
+            meta.className = 'edu-card-meta';
+
+            var dur = document.createElement('span');
+            dur.className = 'edu-card-duration';
+            dur.textContent = edu.duration;
+            meta.appendChild(dur);
+
+            if (edu.location) {
+                var loc = document.createElement('span');
+                loc.className = 'edu-card-location';
+                loc.innerHTML = '<i class="bx bx-map-pin"></i> ' + edu.location;
+                meta.appendChild(loc);
+            }
+            card.appendChild(meta);
+
+            // GPA
+            if (edu.gpa) {
+                var gpa = document.createElement('span');
+                gpa.className = 'edu-card-gpa';
+                gpa.textContent = 'GPA: ' + edu.gpa;
+                card.appendChild(gpa);
+            }
+
+            // Highlights
+            if (edu.highlights && edu.highlights.length > 0) {
+                var highlightsDiv = document.createElement('div');
+                highlightsDiv.className = 'edu-card-highlights';
+                edu.highlights.forEach(function (h) {
+                    var tag = document.createElement('span');
+                    tag.className = 'exp-tech-tag';
+                    tag.textContent = h;
+                    highlightsDiv.appendChild(tag);
+                });
+                card.appendChild(highlightsDiv);
+            }
+
+            grid.appendChild(card);
+        });
+
+        // GSAP stagger animation
+        if (typeof gsap !== 'undefined') {
+            gsap.from('.edu-card', {
+                opacity: 0,
+                y: 30,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '.edu-grid',
+                    start: 'top 80%'
+                }
+            });
+        }
+    }
+
     // Fetch config data — loads local JSON, falls back to hardcoded data
     function fetchExperienceData() {
         showView('exp-loading');
@@ -477,6 +561,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 showCompanies();
                 renderProjects(data);
                 renderSkills(data);
+                renderEducation(data);
             })
             .catch(function () {
                 // Fallback: use hardcoded data (works on file:// protocol)
@@ -485,6 +570,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 showCompanies();
                 renderProjects(FALLBACK_DATA);
                 renderSkills(FALLBACK_DATA);
+                renderEducation(FALLBACK_DATA);
             });
     }
 
