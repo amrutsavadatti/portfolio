@@ -119,6 +119,36 @@
       ]
     },
     {
+      "id": "wpi-cs2011",
+      "name": "Worcester Polytechnic Institute CS",
+      "logo": "https://cdn.brandfetch.io/idOBX-qn95/w/399/h/399/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1768746187320",
+      "role": "Tutor & Software Engineer",
+      "duration": "",
+      "type": "Part time",
+      "projects": [
+        {
+          "id": "AL-maintainence",
+          "name": "AttackLab",
+          "shortDescription": "Fixed Autogen exploit mismatch for course assignment",
+          "detailedDescription": "* Analysed and isolated bug that was causing mismatch in generated solution to test generated problem. \n * Brushed up Perl and fixed the formatting issue to resolve mismatch. \n * This opened the gate for us to work further on developing an autotester environment and ssh access to student VMs for testing and last minute addons.",
+          "techStack": ["Perl", "Git", "SSH"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        },
+        {
+          "id": "fleet-tester",
+          "name": "Fleet Tester for Assignment projects.",
+          "shortDescription": "Designed and built a system to automate and remotely test all the assignment VM infrastructute before release.",
+          "detailedDescription": "* Designed and implemented a distributed fleet-testing framework to auto-generate problems, deploy to student VMs, generate solutions, execute tests, evaluate results, log outputs, and clean up environments. \n * Built centralized orchestration to run workflows across 100+ VMs, enabling automated downloads, controlled execution, and consistent validation across the fleet. \n * Enabled single-click fleet-wide access and patch deployment, streamlining large-scale testing, maintenance, and rapid updates across all student VMs.",
+          "techStack": ["SSH", "Bash", "Networking"],
+          "githubUrl": "",
+          "liveUrl": "",
+          "screenshots": []
+        }
+      ]
+    },
+    {
       "id": "gopalak",
       "name": "Gopalak Milk",
       "logo": "logos/gopalak.png",
