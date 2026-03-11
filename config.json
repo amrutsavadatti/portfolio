@@ -361,6 +361,41 @@
       ]
     }
   ],
+  "achievements": [
+    {
+      "id": "credly-badge-1",
+      "type": "badge",
+      "title": "Intro to Genrative AI",
+      "issuer": "AWS",
+      "date": "03/06/2026",
+      "description": "",
+      "credlyBadgeId": "47578c1d-43d5-4580-95e6-e32ab187b026",
+      "image": "",
+      "credentialUrl": ""
+    },
+    {
+      "id": "Forage_JPMC",
+      "type": "Certificate",
+      "title": "JPMorganChase - Software Engineering Job Simulation",
+      "issuer": "Forage",
+      "date": "03/06/2026",
+      "description": "",
+      "credlyBadgeId": "",
+      "image": "",
+      "credentialUrl": "https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/E6McHJDKsQYh79moz_Sj7temL583QAYpHXD_69ab5474463a3994fbe3d36c_1773025066205_completion_certificate.pdf"
+    },
+    {
+      "id": "DL",
+      "type": "Certificate",
+      "title": "Neural Networks and Deep Learning",
+      "issuer": "Coursera",
+      "date": "05/24/2020",
+      "description": "",
+      "credlyBadgeId": "",
+      "image": "",
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/verify/8AKMFBAVAVKT"
+    }
+  ],
   "education": [
     {
       "id": "wpi-ms",
