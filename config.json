@@ -371,7 +371,20 @@
       "description": "",
       "credlyBadgeId": "47578c1d-43d5-4580-95e6-e32ab187b026",
       "image": "",
-      "credentialUrl": ""
+      "credentialUrl": "",
+      "issuer_icon": ""
+    },
+    {
+      "id": "Anthropic_1",
+      "type": "Certificate",
+      "title": "Claude Code in Action",
+      "issuer": "Anthropic",
+      "date": "03/10/2026",
+      "description": "",
+      "credlyBadgeId": "",
+      "image": "",
+      "credentialUrl": "https://verify.skilljar.com/c/pof4qqhy2m7s",
+      "issuer_icon": "https://cdn.brandfetch.io/idmJWF3N06/theme/light/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1721803183866"
     },
     {
       "id": "Forage_JPMC",
@@ -382,7 +395,8 @@
       "description": "",
       "credlyBadgeId": "",
       "image": "",
-      "credentialUrl": "https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/E6McHJDKsQYh79moz_Sj7temL583QAYpHXD_69ab5474463a3994fbe3d36c_1773025066205_completion_certificate.pdf"
+      "credentialUrl": "https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/E6McHJDKsQYh79moz_Sj7temL583QAYpHXD_69ab5474463a3994fbe3d36c_1773025066205_completion_certificate.pdf",
+      "issuer_icon": "https://cdn.brandfetch.io/idV710Mm_L/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1766666574924"
     },
     {
       "id": "DL",
@@ -393,7 +407,8 @@
       "description": "",
       "credlyBadgeId": "",
       "image": "",
-      "credentialUrl": "https://www.coursera.org/account/accomplishments/verify/8AKMFBAVAVKT"
+      "credentialUrl": "https://www.coursera.org/account/accomplishments/verify/8AKMFBAVAVKT",
+      "issuer_icon": "https://cdn.brandfetch.io/idTHfL51P-/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667591275632"
     }
   ],
   "education": [

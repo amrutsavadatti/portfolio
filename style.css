@@ -1575,6 +1575,14 @@ span {
     min-height: 270px;
 }
 
+.achievement-issuer-logo {
+    width: 7rem;
+    height: 7rem;
+    object-fit: contain;
+    border-radius: 1rem;
+    filter: drop-shadow(0 0 10px rgba(166, 123, 241, 0.3));
+}
+
 .achievement-fallback-icon {
     font-size: 7rem;
     color: var(--main-color);
