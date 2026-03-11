@@ -11,22 +11,25 @@
             href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="style.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
             rel="stylesheet"
         />
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <header class="header">
             <a href="#home" class="logo" id="logo"
-                >Amrut
-                <span>Savadatti</span>
-            </a>
+                >Amrut <span>Savadatti</span></a
+            >
 
-            <box-icon name="menu" id="menu-icon"></box-icon>
+            <div class="menu-icon" id="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
             <nav class="navbar">
                 <a href="#home">Home</a>
@@ -41,47 +44,72 @@
 
         <section class="home" id="home">
             <div class="home-content">
-                <h1>Hi, It's <span>Amrut</span></h1>
-                <h3 class="text-animation">I'm a <span></span></h3>
+                <span class="section-tag">Software Engineer</span>
+                <h1>Amrut<br /><em>Savadatti</em></h1>
                 <p>
                     Passionate Software & Product developer with a love for
                     crafting scalable solutions through innovative architecture
                     and clean code.
                 </p>
 
-                <div class="social-icons">
-                    <a
-                        href="https://www.linkedin.com/in/amrut-savadatti-277069183/"
-                        ><i class="bx bxl-linkedin-square"></i
-                    ></a>
-                    <a href="https://github.com/amrutsavadatti"
-                        ><i class="bx bxl-github"></i
-                    ></a>
-                    <a href="mailto:amrutsavadatticareers@gmail.com"
-                        ><i class="bx bxs-envelope"></i
-                    ></a>
-                    <a href="tel:+17745257497"><i class="bx bxs-phone"></i></a>
+                <div class="terminal-snippet">
+                    <div class="terminal-dots">● ● ●</div>
+                    <div class="terminal-prompt">~ $ connect --with amrut</div>
+                    <nav class="terminal-links">
+                        <a href="https://www.linkedin.com/in/amrut-savadatti-277069183/" target="_blank" rel="noopener noreferrer"><span class="t-index">[1]</span> LinkedIn <span class="t-arrow">↗</span></a>
+                        <a href="https://github.com/amrutsavadatti" target="_blank" rel="noopener noreferrer"><span class="t-index">[2]</span> GitHub <span class="t-arrow">↗</span></a>
+                        <a href="mailto:amrutsavadatticareers@gmail.com"><span class="t-index">[3]</span> Email <span class="t-arrow">↗</span></a>
+                        <a href="tel:+17745257497"><span class="t-index">[4]</span> Phone <span class="t-arrow">↗</span></a>
+                    </nav>
                 </div>
 
                 <div class="btn-group">
                     <a
                         href="mailto:amrutsavadatticareers@gmail.com"
-                        class="btn"
-                        >Contact</a
+                        class="btn-primary"
+                        >Contact Me</a
                     >
                 </div>
             </div>
-            <div>
+            <div class="home-photo-col">
                 <div class="home-img">
+                    <div class="photo-index-number">01</div>
                     <a href="#contact">
-                        <img src="profile.png" href="#contact" alt="" />
+                        <img src="profile.png" alt="Amrut Savadatti" />
                     </a>
+                    <span class="photo-label">Based in MA, USA</span>
                 </div>
+                <div class="vertical-accent">Building · Shipping · Iterating</div>
             </div>
         </section>
 
+        <div class="stats-strip">
+            <div class="stats-strip-inner">
+                <div class="stat-item">
+                    <span class="stat-number">4+</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Projects Shipped</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">6+</span>
+                    <span class="stat-label">Companies</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">3.88</span>
+                    <span class="stat-label">GPA at WPI</span>
+                </div>
+            </div>
+        </div>
+
         <section class="experience" id="experience">
-            <h2 class="heading" id="head">Experience</h2>
+            <span class="section-tag">01 — Experience</span>
+            <h2 class="heading">Where I've worked</h2>
 
             <!-- Loading State -->
             <div id="exp-loading" class="exp-loading">
@@ -90,19 +118,23 @@
             </div>
 
             <!-- Error State -->
-            <div id="exp-error" class="exp-error" style="display: none;">
+            <div id="exp-error" class="exp-error" style="display: none">
                 <i class="bx bx-error-circle"></i>
                 <p>Failed to load experience data.</p>
-                <button class="btn" id="exp-retry-btn">Retry</button>
+                <button class="btn-primary" id="exp-retry-btn">Retry</button>
             </div>
 
             <!-- View 1: Company Tiles Grid -->
-            <div id="exp-companies" class="exp-companies" style="display: none;">
+            <div id="exp-companies" class="exp-companies" style="display: none">
                 <div class="exp-tiles-grid" id="exp-tiles-grid"></div>
             </div>
 
             <!-- View 2: Company Detail -->
-            <div id="exp-company-detail" class="exp-company-detail" style="display: none;">
+            <div
+                id="exp-company-detail"
+                class="exp-company-detail"
+                style="display: none"
+            >
                 <button class="exp-back-btn" id="exp-back-to-companies">
                     <i class="bx bx-arrow-back"></i> All Companies
                 </button>
@@ -111,16 +143,24 @@
             </div>
 
             <!-- View 3: Project Detail -->
-            <div id="exp-project-detail" class="exp-project-detail" style="display: none;">
+            <div
+                id="exp-project-detail"
+                class="exp-project-detail"
+                style="display: none"
+            >
                 <button class="exp-back-btn" id="exp-back-to-company">
                     <i class="bx bx-arrow-back"></i> Back to Projects
                 </button>
-                <div class="exp-project-content" id="exp-project-content"></div>
+                <div
+                    class="exp-project-content"
+                    id="exp-project-content"
+                ></div>
             </div>
         </section>
 
         <section class="projects" id="projects">
-            <h2 class="heading">Projects</h2>
+            <span class="section-tag">02 — Projects</span>
+            <h2 class="heading">What I've built</h2>
 
             <!-- View 1: Project Tiles Grid -->
             <div id="proj-tiles" class="proj-tiles">
@@ -128,44 +168,61 @@
             </div>
 
             <!-- View 2: Project Detail -->
-            <div id="proj-detail" class="proj-detail" style="display: none;">
+            <div id="proj-detail" class="proj-detail" style="display: none">
                 <button class="exp-back-btn" id="proj-back-btn">
                     <i class="bx bx-arrow-back"></i> All Projects
                 </button>
-                <div class="proj-detail-content" id="proj-detail-content"></div>
+                <div
+                    class="proj-detail-content"
+                    id="proj-detail-content"
+                ></div>
             </div>
         </section>
 
         <section class="skills" id="skills">
-            <h2 class="heading">Skills</h2>
+            <span class="section-tag">03 — Skills</span>
+            <h2 class="heading">My toolkit</h2>
 
             <div id="skills-grid" class="skills-grid"></div>
         </section>
 
         <section class="education" id="education">
-            <h2 class="heading">Education</h2>
+            <span class="section-tag">04 — Education</span>
+            <h2 class="heading">Where I've studied</h2>
             <div id="edu-grid" class="edu-grid"></div>
         </section>
 
         <section class="achievements" id="achievements">
-            <h2 class="heading">Achievements</h2>
+            <span class="section-tag">05 — Achievements</span>
+            <h2 class="heading">Recognition</h2>
 
             <!-- View 1: Category Tiles -->
             <div id="achievements-categories" class="achievements-categories">
-                <div class="achievements-tiles-grid" id="achievements-tiles-grid"></div>
+                <div
+                    class="achievements-tiles-grid"
+                    id="achievements-tiles-grid"
+                ></div>
             </div>
 
             <!-- View 2: Category Items -->
-            <div id="achievements-items" class="achievements-items" style="display: none;">
+            <div
+                id="achievements-items"
+                class="achievements-items"
+                style="display: none"
+            >
                 <button class="exp-back-btn" id="achievements-back-btn">
                     <i class="bx bx-arrow-back"></i> All Categories
                 </button>
-                <div class="achievements-grid" id="achievements-grid"></div>
+                <div
+                    class="achievements-grid"
+                    id="achievements-grid"
+                ></div>
             </div>
         </section>
 
         <section class="resume" id="resume">
-            <h2 class="heading">Resume</h2>
+            <span class="section-tag">06 — Resume</span>
+            <h2 class="heading">My resume</h2>
             <div class="resume-container">
                 <div class="resume-content">
                     <h3>Download my complete resume</h3>
@@ -178,23 +235,19 @@
                         <a
                             href="https://drive.google.com/file/d/1L2gJA-UggW-Sop5Z4ojOWzsAaTPPGb1Q/view?usp=sharing"
                             download="Amrut_resume.pdf"
-                            class="btn"
+                            class="btn-primary"
                             >Download PDF</a
                         >
                         <a
                             href="https://drive.google.com/file/d/1L2gJA-UggW-Sop5Z4ojOWzsAaTPPGb1Q/view?usp=sharing"
                             target="_blank"
-                            class="btn btn-view"
+                            class="btn-secondary"
                             >View Resume</a
                         >
                     </div>
                 </div>
                 <div class="resume-preview">
                     <div class="resume-frame">
-                        <!--<iframe
-                            src="https://drive.google.com/file/d/1L2gJA-UggW-Sop5Z4ojOWzsAaTPPGb1Q/view?usp=sharing#toolbar=0"
-                            frameborder="0"
-                        ></iframe>-->
                         <iframe
                             src="https://drive.google.com/file/d/1L2gJA-UggW-Sop5Z4ojOWzsAaTPPGb1Q/preview"
                             frameborder="0"
@@ -237,7 +290,9 @@
                 <p class="cta-text">
                     Ready to add a reliable developer to your team?
                 </p>
-                <a href="mailto:amrutsavadatticareers@gmail.com" class="btn"
+                <a
+                    href="mailto:amrutsavadatticareers@gmail.com"
+                    class="btn-primary"
                     >Hire Me</a
                 >
             </div>

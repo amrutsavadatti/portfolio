@@ -1,48 +1,81 @@
+// Staggered fade-up entrance animations
 var tl = gsap.timeline();
 
-gsap.from("header", {
-    y: -100,
-    duration: 1,
-})
-
-gsap.from("nav", {
-    y: -100,
-    duration: 1,
-    stagger: 3
-})
-
-tl.from(".home-img", {
-    x: "-150vw",
-    duration: 2,
-    scale: 2
+tl.from(".home-content .section-tag", {
+    opacity: 0,
+    y: 24,
+    duration: 0.6,
+    delay: 0.1
 })
 
 tl.from(".home-content h1", {
     opacity: 0,
-    y: 30,
-    duration: 0.5
-})
+    y: 24,
+    duration: 0.6
+}, "-=0.3")
 
 tl.from(".home-content h3", {
     opacity: 0,
-    y: 30,
+    y: 24,
     duration: 0.5
-})
+}, "-=0.2")
 
 tl.from(".home-content p", {
     opacity: 0,
-    y: 30,
+    y: 24,
     duration: 0.5
-})
+}, "-=0.2")
 
-tl.from(".home-content div", {
+tl.from(".terminal-snippet", {
     opacity: 0,
-    y: 30,
+    y: 24,
     duration: 0.5
-})
+}, "-=0.2")
+
+tl.from(".social-links", {
+    opacity: 0,
+    y: 24,
+    duration: 0.5
+}, "-=0.2")
+
+tl.from(".btn-group", {
+    opacity: 0,
+    y: 24,
+    duration: 0.5
+}, "-=0.2")
+
+tl.from(".home-photo-col", {
+    opacity: 0,
+    x: 40,
+    duration: 0.8
+}, "-=0.6")
+
+tl.from(".stats-strip", {
+    opacity: 0,
+    y: 24,
+    duration: 0.6
+}, "-=0.3")
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Staggered reveal for sections using IntersectionObserver
+    var sections = document.querySelectorAll('section, .stats-strip');
+    var sectionObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                sectionObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    sections.forEach(function(section) {
+        section.style.opacity = '0';
+        sectionObserver.observe(section);
+    });
+    // Make home visible immediately (handled by GSAP)
+    var homeSection = document.querySelector('.home');
+    if (homeSection) homeSection.style.opacity = '1';
+
     // Joke section animations when in viewport
     const jokeSection = document.querySelector('#joke');
     if (jokeSection) {
@@ -85,8 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Mobile Menu Toggle
-document.querySelector('#menu-icon').addEventListener('click', () => {
+document.querySelector('#menu-icon').addEventListener('click', function() {
     document.querySelector('.navbar').classList.toggle('active');
+    this.classList.toggle('active');
 });
 
 // Hide menu when clicking a nav link on mobile
@@ -885,7 +919,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
 
         var h4 = document.createElement('h4');
         h4.textContent = company.role;
-        h4.style.color = 'var(--main-color)';
+        h4.style.color = 'var(--sienna)';
         info.appendChild(h4);
 
         var p = document.createElement('p');
