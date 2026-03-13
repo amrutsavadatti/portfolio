@@ -375,6 +375,18 @@
       "issuer_icon": ""
     },
     {
+      "id": "Anthropic_3",
+      "type": "Certificate",
+      "title": "Introduction to agent skills",
+      "issuer": "Anthropic",
+      "date": "03/12/2026",
+      "description": "",
+      "credlyBadgeId": "",
+      "image": "",
+      "credentialUrl": "https://verify.skilljar.com/c/4kt4eevcb2jx",
+      "issuer_icon": "https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1721803183716"
+    },
+    {
       "id": "Anthropic_2",
       "type": "Certificate",
       "title": "Claude 101",
