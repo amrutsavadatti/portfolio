@@ -375,6 +375,18 @@
       "issuer_icon": ""
     },
     {
+      "id": "Anthropic_2",
+      "type": "Certificate",
+      "title": "Claude 101",
+      "issuer": "Anthropic",
+      "date": "03/11/2026",
+      "description": "",
+      "credlyBadgeId": "",
+      "image": "",
+      "credentialUrl": "https://verify.skilljar.com/c/ywaz73ntacoz",
+      "issuer_icon": "https://cdn.brandfetch.io/idmJWF3N06/theme/dark/symbol.svg?c=1bxid64Mup7aczewSAYMX&t=1721803183716"
+    },
+    {
       "id": "Anthropic_1",
       "type": "Certificate",
       "title": "Claude Code in Action",
