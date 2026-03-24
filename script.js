@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const frameOverlay = document.querySelector('.frame-overlay');
     if (frameOverlay) {
         frameOverlay.addEventListener('click', function() {
-            window.open('./Amrut_CV.pdf', '_blank');
+            window.open('https://drive.google.com/file/d/1qEbdD50ugsT73ZojwtZB86nnbhDj7ySS/view?usp=sharing', '_blank');
         });
     }
 });
