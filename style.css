@@ -2497,6 +2497,15 @@ section {
         font-size: 90%;
     }
 
+    /* Disable weather effects on mobile */
+    #weather-canvas,
+    .weather-butterfly,
+    .weather-cloud,
+    .weather-fog,
+    .weather-lightning,
+    .weather-bolt,
+    .weather-sun { display: none !important; }
+
     .header {
         padding: 1.5rem 2rem;
     }
