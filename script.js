@@ -1,109 +1,249 @@
-// Staggered fade-up entrance animations
+gsap.registerPlugin(ScrollTrigger);
+
+// ============================================================
+// LENIS SMOOTH SCROLL (graceful fallback if CDN fails)
+// ============================================================
+try {
+    var lenis = new Lenis({ duration: 1.2, easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+} catch(e) {
+    console.warn('Lenis smooth scroll not available, using native scroll');
+}
+
+// ============================================================
+// CUSTOM CURSOR
+// ============================================================
+(function() {
+    var dot = document.querySelector('.cursor-dot');
+    var ring = document.querySelector('.cursor-ring');
+    if (!dot || !ring) return;
+    var mx = 0, my = 0, dx = 0, dy = 0;
+    window.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+    document.querySelectorAll('a, button, .exp-tile, .proj-tile, .skills-item, .achievement-category-tile, .edu-card').forEach(function(el) {
+        el.addEventListener('mouseenter', function() { ring.classList.add('hovering'); });
+        el.addEventListener('mouseleave', function() { ring.classList.remove('hovering'); });
+    });
+    (function cursorLoop() {
+        dx += (mx - dx) * 0.15;
+        dy += (my - dy) * 0.15;
+        dot.style.transform = 'translate(' + (mx - 4) + 'px,' + (my - 4) + 'px)';
+        ring.style.transform = 'translate(' + (dx - 18) + 'px,' + (dy - 18) + 'px)';
+        requestAnimationFrame(cursorLoop);
+    })();
+})();
+
+// ============================================================
+// ANIMATED GRAIN
+// ============================================================
+(function() {
+    var turbulence = document.querySelector('#grain-filter feTurbulence');
+    if (!turbulence) return;
+    var seed = 1;
+    setInterval(function() {
+        seed = (seed % 5) + 1;
+        turbulence.setAttribute('seed', seed);
+    }, 150);
+})();
+
+// ============================================================
+// HERO — KINETIC SPLIT TEXT
+// ============================================================
+(function() {
+    var h1 = document.querySelector('.home-content h1');
+    if (!h1) return;
+
+    // Helper: split text content of an element into .char spans
+    function splitChars(text) {
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            if (ch === ' ' || ch === '\n' || ch === '\t') continue; // skip whitespace-only
+            var span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = ch;
+            frag.appendChild(span);
+        }
+        return frag;
+    }
+
+    try {
+        var children = Array.from(h1.childNodes);
+        var newContent = document.createDocumentFragment();
+
+        children.forEach(function(node) {
+            if (node.nodeType === 3) {
+                // Text node — split into chars, but skip pure whitespace
+                var text = node.textContent;
+                if (text.trim().length === 0) return;
+                newContent.appendChild(splitChars(text));
+            } else if (node.nodeName === 'BR') {
+                newContent.appendChild(document.createElement('br'));
+            } else if (node.nodeName === 'EM') {
+                var em = document.createElement('em');
+                em.appendChild(splitChars(node.textContent));
+                newContent.appendChild(em);
+            } else {
+                newContent.appendChild(node.cloneNode(true));
+            }
+        });
+
+        h1.innerHTML = '';
+        h1.appendChild(newContent);
+    } catch(e) {
+        // If split fails, leave h1 untouched
+        console.warn('Split text failed:', e);
+    }
+})();
+
+// ============================================================
+// HERO ENTRANCE ANIMATIONS
+// ============================================================
 var tl = gsap.timeline();
 
 tl.from(".home-content .section-tag", {
     opacity: 0,
     y: 24,
     duration: 0.6,
-    delay: 0.1
-})
+    delay: 0.2
+});
 
-tl.from(".home-content h1", {
+// Kinetic character animation — random directions
+tl.from(".home-content h1 .char", {
     opacity: 0,
-    y: 24,
-    duration: 0.6
-}, "-=0.3")
-
-tl.from(".home-content h3", {
-    opacity: 0,
-    y: 24,
-    duration: 0.5
-}, "-=0.2")
+    y: function() { return gsap.utils.random(-80, 80); },
+    x: function() { return gsap.utils.random(-40, 40); },
+    rotation: function() { return gsap.utils.random(-25, 25); },
+    scale: function() { return gsap.utils.random(0.3, 1.4); },
+    duration: 0.9,
+    ease: 'back.out(1.7)',
+    stagger: { each: 0.035, from: 'random' }
+}, "-=0.3");
 
 tl.from(".home-content p", {
     opacity: 0,
     y: 24,
     duration: 0.5
-}, "-=0.2")
+}, "-=0.4");
 
 tl.from(".terminal-snippet", {
     opacity: 0,
     y: 24,
     duration: 0.5
-}, "-=0.2")
-
-tl.from(".social-links", {
-    opacity: 0,
-    y: 24,
-    duration: 0.5
-}, "-=0.2")
+}, "-=0.2");
 
 tl.from(".btn-group", {
     opacity: 0,
     y: 24,
     duration: 0.5
-}, "-=0.2")
+}, "-=0.2");
 
 tl.from(".home-photo-col", {
     opacity: 0,
     x: 40,
     duration: 0.8
-}, "-=0.6")
+}, "-=0.6");
 
 tl.from(".stats-strip", {
     opacity: 0,
     y: 24,
     duration: 0.6
-}, "-=0.3")
+}, "-=0.3");
+
+// ============================================================
+// MAGNETIC BUTTON
+// ============================================================
+(function() {
+    var btn = document.querySelector('.home .btn-primary');
+    if (!btn) return;
+    btn.addEventListener('mousemove', function(e) {
+        var r = btn.getBoundingClientRect();
+        var x = e.clientX - r.left - r.width / 2;
+        var y = e.clientY - r.top - r.height / 2;
+        btn.style.transform = 'translate(' + (x * 0.3) + 'px,' + (y * 0.3) + 'px)';
+    });
+    btn.addEventListener('mouseleave', function() {
+        btn.style.transform = 'translate(0,0)';
+        btn.style.transition = 'transform .4s cubic-bezier(.34,1.56,.64,1)';
+        setTimeout(function() { btn.style.transition = ''; }, 400);
+    });
+    btn.addEventListener('mouseenter', function() { btn.style.transition = ''; });
+})();
+
+// ============================================================
+// STATS — COUNT UP ON SCROLL
+// ============================================================
+(function() {
+    var statNumbers = document.querySelectorAll('.stat-number');
+    if (!statNumbers.length || typeof ScrollTrigger === 'undefined') return;
+
+    statNumbers.forEach(function(el) {
+        var rawText = el.textContent.trim();
+        var hasSuffix = rawText.match(/[+%]$/);
+        var suffix = hasSuffix ? hasSuffix[0] : '';
+        var numStr = rawText.replace(/[+%]/g, '');
+        var target = parseFloat(numStr);
+        if (isNaN(target)) return;
+        var decimals = numStr.indexOf('.') !== -1 ? numStr.split('.')[1].length : 0;
+
+        el.textContent = '0' + suffix;
+
+        ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            onEnter: function() {
+                gsap.to({ v: 0 }, {
+                    v: target,
+                    duration: 1.8,
+                    ease: 'power2.out',
+                    onUpdate: function() {
+                        el.textContent = this.targets()[0].v.toFixed(decimals) + suffix;
+                    }
+                });
+            },
+            once: true
+        });
+    });
+})();
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Staggered reveal for sections using IntersectionObserver
-    var sections = document.querySelectorAll('section, .stats-strip');
-    var sectionObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-                sectionObserver.unobserve(entry.target);
+    // Scroll-triggered section reveals using GSAP ScrollTrigger
+    // (compatible with Lenis smooth scroll, unlike IntersectionObserver)
+    var sections = document.querySelectorAll('section:not(.home), .stats-strip');
+    sections.forEach(function(section) {
+        gsap.set(section, { opacity: 0, y: 24 });
+        gsap.to(section, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                once: true
             }
         });
-    }, { threshold: 0.1 });
-    sections.forEach(function(section) {
-        section.style.opacity = '0';
-        sectionObserver.observe(section);
     });
-    // Make home visible immediately (handled by GSAP)
-    var homeSection = document.querySelector('.home');
-    if (homeSection) homeSection.style.opacity = '1';
 
-    // Joke section animations when in viewport
-    const jokeSection = document.querySelector('#joke');
+    // Joke section animations when in viewport (using ScrollTrigger for Lenis compat)
+    var jokeSection = document.querySelector('#joke');
     if (jokeSection) {
-        // Create an observer for the joke section
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Add animation classes when in viewport
-                    document.querySelector('.joke-setup').classList.add('animate');
-                    
-                    // Animate punchline after a delay
-                    setTimeout(() => {
-                        document.querySelector('.joke-punchline').classList.add('animate');
-                    }, 800);
-                    
-                    // Animate tagline after another delay
-                    setTimeout(() => {
-                        document.querySelector('.joke-tagline').classList.add('animate');
-                    }, 1600);
-                    
-                    // Stop observing after animation
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-        
-        // Start observing the joke section
-        observer.observe(jokeSection);
+        ScrollTrigger.create({
+            trigger: jokeSection,
+            start: 'top 70%',
+            once: true,
+            onEnter: function() {
+                document.querySelector('.joke-setup').classList.add('animate');
+                setTimeout(function() {
+                    document.querySelector('.joke-punchline').classList.add('animate');
+                }, 800);
+                setTimeout(function() {
+                    document.querySelector('.joke-tagline').classList.add('animate');
+                }, 1600);
+            }
+        });
     }
 
     // Resume frame overlay functionality
@@ -394,6 +534,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 duration: 0.5,
                 stagger: 0.1,
                 ease: 'power2.out',
+                clearProps: 'transform',
                 scrollTrigger: {
                     trigger: '.proj-tiles-grid',
                     start: 'top 80%'
@@ -489,6 +630,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 duration: 0.5,
                 stagger: 0.1,
                 ease: 'power2.out',
+                clearProps: 'transform',
                 scrollTrigger: {
                     trigger: '.skills-grid',
                     start: 'top 80%'
@@ -573,6 +715,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 duration: 0.5,
                 stagger: 0.1,
                 ease: 'power2.out',
+                clearProps: 'transform',
                 scrollTrigger: {
                     trigger: '.edu-grid',
                     start: 'top 80%'
@@ -652,7 +795,8 @@ document.querySelectorAll('.navbar a').forEach(link => {
                     y: 30,
                     duration: 0.5,
                     stagger: 0.1,
-                    ease: 'power2.out'
+                    ease: 'power2.out',
+                    clearProps: 'transform'
                 });
             }
         }
@@ -701,6 +845,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 duration: 0.5,
                 stagger: 0.1,
                 ease: 'power2.out',
+                clearProps: 'transform',
                 scrollTrigger: {
                     trigger: '.achievements-tiles-grid',
                     start: 'top 80%'
@@ -883,7 +1028,8 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 y: 30,
                 duration: 0.5,
                 stagger: 0.1,
-                ease: 'power2.out'
+                ease: 'power2.out',
+                clearProps: 'transform'
             });
         }
     }
@@ -992,7 +1138,8 @@ document.querySelectorAll('.navbar a').forEach(link => {
                 y: 30,
                 duration: 0.5,
                 stagger: 0.1,
-                ease: 'power2.out'
+                ease: 'power2.out',
+                clearProps: 'transform'
             });
         }
     }
@@ -1108,4 +1255,105 @@ document.querySelectorAll('.navbar a').forEach(link => {
 
     // Initialize on page load
     fetchExperienceData();
+})();
+
+// ============================================================
+// 3D TILT + RADIAL GLOW ON CARDS (event delegation)
+// Works for dynamically created cards
+// ============================================================
+(function() {
+    var TILT_SELECTORS = '.skills-category, .exp-tile, .achievement-category-tile';
+
+    // Inject glow div into cards that don't have one
+    function ensureGlow(card) {
+        if (card.querySelector('.card-glow')) return;
+        var glow = document.createElement('div');
+        glow.className = 'card-glow';
+        card.insertBefore(glow, card.firstChild);
+    }
+
+    document.addEventListener('mousemove', function(e) {
+        var card = e.target.closest(TILT_SELECTORS);
+        if (!card) return;
+
+        ensureGlow(card);
+        var glow = card.querySelector('.card-glow');
+
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+
+        card.style.transform = 'perspective(600px) rotateY(' + (x * 10) + 'deg) rotateX(' + (-y * 10) + 'deg) scale(1.02)';
+        if (glow) {
+            glow.style.background = 'radial-gradient(circle at ' + ((x + 0.5) * 100) + '% ' + ((y + 0.5) * 100) + '%, rgba(196,82,42,0.1) 0%, transparent 60%)';
+        }
+    });
+
+    document.addEventListener('mouseleave', function(e) {
+        var card = e.target.closest(TILT_SELECTORS);
+        if (!card) return;
+        card.style.transform = '';
+        card.style.transition = 'transform 0.5s ease';
+        setTimeout(function() { card.style.transition = ''; }, 500);
+    }, true);
+
+    // Also handle mouseleave on cards directly via delegation
+    document.addEventListener('mouseout', function(e) {
+        var card = e.target.closest(TILT_SELECTORS);
+        if (!card) return;
+        // Check if we're actually leaving the card (not entering a child)
+        var related = e.relatedTarget;
+        if (related && card.contains(related)) return;
+        card.style.transform = '';
+        card.style.transition = 'transform 0.5s ease';
+        setTimeout(function() { card.style.transition = ''; }, 500);
+    });
+})();
+
+
+// ============================================================
+// FOOTER — CONTENT REVEAL ON SCROLL
+// ============================================================
+(function() {
+    var footer = document.querySelector('.end');
+    if (!footer) return;
+
+    var endContent = footer.querySelector('.end-content');
+    if (endContent) {
+        gsap.from(endContent, {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: footer,
+                start: 'top 70%',
+                once: true
+            }
+        });
+    }
+})();
+
+// ============================================================
+// RE-REGISTER CURSOR HOVER ON DYNAMIC ELEMENTS
+// The initial cursor setup runs before cards exist.
+// This uses event delegation instead.
+// ============================================================
+(function() {
+    var ring = document.querySelector('.cursor-ring');
+    if (!ring) return;
+    var HOVER_SELECTORS = 'a, button, .exp-tile, .proj-tile, .skills-item, .achievement-category-tile, .edu-card, .exp-project-card, .achievement-card, .skills-category';
+
+    document.addEventListener('mouseover', function(e) {
+        if (e.target.closest(HOVER_SELECTORS)) {
+            ring.classList.add('hovering');
+        }
+    });
+    document.addEventListener('mouseout', function(e) {
+        if (e.target.closest(HOVER_SELECTORS)) {
+            var related = e.relatedTarget;
+            if (related && related.closest && related.closest(HOVER_SELECTORS)) return;
+            ring.classList.remove('hovering');
+        }
+    });
 })();

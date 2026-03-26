@@ -19,8 +19,16 @@
             rel="stylesheet"
         />
         <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     </head>
     <body>
+        <!-- Custom cursor -->
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+
+        <!-- Animated grain overlay -->
+        <svg class="grain-overlay"><filter id="grain-filter"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" stitchTiles="stitch" seed="1"/></filter><rect width="100%" height="100%" filter="url(#grain-filter)"/></svg>
+
         <header class="header">
             <a href="#home" class="logo" id="logo"
                 >Amrut <span>Savadatti</span></a
@@ -33,13 +41,13 @@
             </div>
 
             <nav class="navbar">
-                <a href="#home">Home</a>
-                <a href="#experience">Experience</a>
-                <a href="#projects">Projects</a>
-                <a href="#skills">Skills</a>
-                <a href="#education">Education</a>
-                <a href="#achievements">Achievements</a>
-                <a href="#resume">Resume</a>
+                <a href="#home" class="nav-brush">Home<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
+                <a href="#experience" class="nav-brush">Experience<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
+                <a href="#projects" class="nav-brush">Projects<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
+                <a href="#skills" class="nav-brush">Skills<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
+                <a href="#education" class="nav-brush">Education<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
+                <a href="#achievements" class="nav-brush">Achievements<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
+                <a href="#resume" class="nav-brush">Resume<svg viewBox="0 0 100 8"><path d="M0,5 Q25,0 50,5 T100,5"/></svg></a>
             </nav>
         </header>
 
