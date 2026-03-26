@@ -29,10 +29,15 @@
         <!-- Animated grain overlay -->
         <svg class="grain-overlay"><filter id="grain-filter"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" stitchTiles="stitch" seed="1"/></filter><rect width="100%" height="100%" filter="url(#grain-filter)"/></svg>
 
+        <!-- Weather mood effects -->
+        <canvas id="weather-canvas"></canvas>
+        <div id="weather-effects"></div>
+
         <header class="header">
             <a href="#home" class="logo" id="logo"
                 >Amrut <span>Savadatti</span></a
             >
+            <div class="weather-indicator" id="weather-indicator"></div>
 
             <div class="menu-icon" id="menu-icon">
                 <span></span>

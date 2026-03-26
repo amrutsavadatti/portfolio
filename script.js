@@ -1357,3 +1357,551 @@ document.querySelectorAll('.navbar a').forEach(link => {
         }
     });
 })();
+
+
+// ============================================================
+// WEATHER MOOD SYSTEM
+// Fetches real weather via IP geolocation + Open-Meteo,
+// then applies ambient visual effects to match the mood.
+// API calls happen exactly ONCE on page load.
+// ============================================================
+(function() {
+    'use strict';
+
+    // --- CONFIGURATION ---
+    var CONFIG = {
+        GEO_URL: 'https://ipapi.co/json/',
+        WEATHER_URL: 'https://api.open-meteo.com/v1/forecast',
+        DEFAULT_LAT: 42.27,
+        DEFAULT_LON: -71.80,
+        DEFAULT_CITY: '',
+        DEFAULT_MOOD: 'clear',
+        WIND_THRESHOLD: 40,
+        TIMEOUT: 5000,
+        PARTICLE_COUNTS: { rain: 120, snow: 80, wind: 35 },
+        BUTTERFLY_COUNT: 4,
+        MOUSE_HISTORY_SIZE: 60
+    };
+
+    // --- WMO CODE -> MOOD ---
+    function wmoToMood(code, windSpeed) {
+        if (code <= 1) {
+            return (windSpeed > CONFIG.WIND_THRESHOLD) ? 'windy' : 'clear';
+        }
+        if (code <= 3) {
+            return (windSpeed > CONFIG.WIND_THRESHOLD) ? 'windy' : 'cloudy';
+        }
+        if (code === 45 || code === 48) return 'foggy';
+        if (code >= 51 && code <= 67) return 'rainy';
+        if (code >= 71 && code <= 77) return 'snowy';
+        if (code >= 80 && code <= 82) return 'rainy';
+        if (code >= 85 && code <= 86) return 'snowy';
+        if (code >= 95) return 'thunderstorm';
+        return 'clear';
+    }
+
+    // --- WEATHER ICON SVGs ---
+    var ICONS = {
+        clear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
+        cloudy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>',
+        rainy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 13v6M8 13v6M12 15v6M20 9.5A4.5 4.5 0 0018 1a6 6 0 00-11.6 2A4.5 4.5 0 003 9.5 4 4 0 004 17h14a4 4 0 002-7.5z"/></svg>',
+        snowy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 9.5A4.5 4.5 0 0018 1a6 6 0 00-11.6 2A4.5 4.5 0 003 9.5 4 4 0 004 17h14a4 4 0 002-7.5z"/><path d="M8 21l.5-1M12 21l.5-1M16 21l.5-1"/><circle cx="8.5" cy="19" r="0.5" fill="currentColor"/><circle cx="12.5" cy="19" r="0.5" fill="currentColor"/><circle cx="16.5" cy="19" r="0.5" fill="currentColor"/></svg>',
+        thunderstorm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/><path d="M13 12l-2 5h3l-2 5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        foggy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10h16M4 14h12M4 18h16" stroke-linecap="round"/></svg>',
+        windy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.59 4.59A2 2 0 1111 8H2M12.59 19.41A2 2 0 1014 16H2M17.73 7.73A2.5 2.5 0 1119.5 12H2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    };
+
+    // --- BUTTERFLY SVG ---
+    var BUTTERFLY_COLORS = ['#7a9e87', '#c4522a', '#1e3d2f', '#e8855e'];
+    function butterflyHTML(color) {
+        return '<svg viewBox="0 0 24 24" fill="' + color + '" opacity="0.6">'
+            + '<path class="wing-l" d="M12 12C9 8 4 6 2 9s3 7 6 6c1-.3 2.5-1.5 4-3z"/>'
+            + '<path class="wing-r" d="M12 12c3-4 8-6 10-3s-3 7-6 6c-1-.3-2.5-1.5-4-3z"/>'
+            + '<ellipse cx="12" cy="14" rx="0.5" ry="3" fill="' + color + '" opacity="0.8"/>'
+            + '</svg>';
+    }
+
+    // --- STATE (set once, never re-fetched) ---
+    var state = {
+        mood: null,
+        canvas: null,
+        ctx: null,
+        particles: [],
+        butterflies: [],
+        mouseHistory: [],
+        mx: window.innerWidth / 2,
+        my: window.innerHeight / 2,
+        animRunning: false,
+        lightningTimer: null
+    };
+
+    // --- PREFLIGHT ---
+    function shouldRunEffects() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+        return true;
+    }
+
+    // --- FETCH WITH TIMEOUT ---
+    function fetchWithTimeout(url, ms) {
+        return Promise.race([
+            fetch(url).then(function(r) { return r.json(); }),
+            new Promise(function(_, reject) {
+                setTimeout(function() { reject(new Error('timeout')); }, ms);
+            })
+        ]);
+    }
+
+    // --- API CALLS (run exactly once) ---
+    function fetchLocation() {
+        return fetchWithTimeout(CONFIG.GEO_URL, CONFIG.TIMEOUT)
+            .then(function(data) {
+                return {
+                    lat: data.latitude || CONFIG.DEFAULT_LAT,
+                    lon: data.longitude || CONFIG.DEFAULT_LON,
+                    city: data.city || CONFIG.DEFAULT_CITY,
+                    region: data.region_code || ''
+                };
+            })
+            .catch(function() {
+                return { lat: CONFIG.DEFAULT_LAT, lon: CONFIG.DEFAULT_LON, city: '', region: '' };
+            });
+    }
+
+    function fetchWeather(lat, lon) {
+        var url = CONFIG.WEATHER_URL
+            + '?latitude=' + lat
+            + '&longitude=' + lon
+            + '&current=weather_code,temperature_2m,wind_speed_10m'
+            + '&timezone=auto';
+        return fetchWithTimeout(url, CONFIG.TIMEOUT)
+            .then(function(data) {
+                var c = data.current || {};
+                return {
+                    code: c.weather_code != null ? c.weather_code : 0,
+                    temp: c.temperature_2m != null ? c.temperature_2m : null,
+                    wind: c.wind_speed_10m != null ? c.wind_speed_10m : 0
+                };
+            })
+            .catch(function() {
+                return { code: 0, temp: null, wind: 0 };
+            });
+    }
+
+    // --- NAVBAR INDICATOR ---
+    var MOOD_LABELS = {
+        clear: 'Sunny', cloudy: 'Cloudy', rainy: 'Rainy',
+        snowy: 'Snowy', thunderstorm: 'Thunder', foggy: 'Foggy', windy: 'Windy'
+    };
+
+    function updateIndicator(mood, weather, loc) {
+        var el = document.getElementById('weather-indicator');
+        if (!el) return;
+        var html = (ICONS[mood] || ICONS.clear);
+        html += '<span class="weather-label">' + (MOOD_LABELS[mood] || mood) + '</span>';
+        if (weather.temp !== null) {
+            html += '<span class="weather-temp">' + Math.round(weather.temp) + '\u00B0C</span>';
+        }
+        if (loc.region) {
+            html += '<span class="weather-region">' + loc.region + '</span>';
+        }
+        el.innerHTML = html;
+        el.title = loc.city;
+        el.classList.add('loaded');
+    }
+
+    // --- EFFECT DISPATCHER ---
+    function startEffects(mood) {
+        state.mood = mood;
+        switch (mood) {
+            case 'clear':        initSun(); initButterflies(); break;
+            case 'rainy':        initCanvasParticles('rain'); break;
+            case 'snowy':        initCanvasParticles('snow'); break;
+            case 'cloudy':       initClouds(); break;
+            case 'thunderstorm': initCanvasParticles('rain'); initLightning(); break;
+            case 'foggy':        initFog(); break;
+            case 'windy':        initCanvasParticles('wind'); break;
+        }
+    }
+
+    // ========================================
+    // CANVAS PARTICLE SYSTEM (rain/snow/wind)
+    // ========================================
+    function initCanvasParticles(type) {
+        state.canvas = document.getElementById('weather-canvas');
+        if (!state.canvas) return;
+        state.ctx = state.canvas.getContext('2d');
+        resizeCanvas();
+        window.addEventListener('resize', debounce(resizeCanvas, 250));
+        state.canvas.style.display = 'block';
+        createParticles(type);
+        tickCanvas(type);
+    }
+
+    function resizeCanvas() {
+        if (!state.canvas) return;
+        state.canvas.width = window.innerWidth;
+        state.canvas.height = window.innerHeight;
+    }
+
+    function createParticles(type) {
+        var count = CONFIG.PARTICLE_COUNTS[type] || 100;
+        state.particles = [];
+        var w = window.innerWidth, h = window.innerHeight;
+        for (var i = 0; i < count; i++) {
+            if (type === 'rain') {
+                state.particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    speed: 4 + Math.random() * 5,
+                    len: 12 + Math.random() * 12
+                });
+            } else if (type === 'snow') {
+                state.particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: 1 + Math.random() * 2.5,
+                    speed: 0.4 + Math.random() * 1.2,
+                    drift: Math.random() * Math.PI * 2
+                });
+            } else if (type === 'wind') {
+                state.particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    speed: 2.5 + Math.random() * 4,
+                    size: 3 + Math.random() * 5,
+                    rot: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.1,
+                    vy: (Math.random() - 0.5) * 1.5,
+                    color: Math.random() > 0.5 ? 'rgba(122,158,135,' : 'rgba(196,82,42,'
+                });
+            }
+        }
+    }
+
+    var _time = 0;
+    function tickCanvas(type) {
+        if (!state.ctx) return;
+        var ctx = state.ctx;
+        var w = state.canvas.width, h = state.canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        _time += 0.016;
+
+        for (var i = 0; i < state.particles.length; i++) {
+            var p = state.particles[i];
+
+            if (type === 'rain') {
+                ctx.strokeStyle = 'rgba(30,61,47,0.18)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x + 0.5, p.y + p.len);
+                ctx.stroke();
+                p.y += p.speed;
+                p.x += 0.3;
+                if (p.y > h) { p.y = -p.len; p.x = Math.random() * w; }
+
+            } else if (type === 'snow') {
+                ctx.fillStyle = 'rgba(200,195,185,0.55)';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+                p.y += p.speed;
+                p.x += Math.sin(_time * 1.5 + p.drift) * 0.5;
+                if (p.y > h + p.r) { p.y = -p.r; p.x = Math.random() * w; }
+
+            } else if (type === 'wind') {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rot);
+                ctx.fillStyle = p.color + '0.25)';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.size, p.size * 0.4, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                p.x -= p.speed;
+                p.y += p.vy + Math.sin(_time * 2 + i) * 0.3;
+                p.rot += p.rotSpeed;
+                if (p.x < -20) { p.x = w + 20; p.y = Math.random() * h; }
+                if (p.y > h + 20 || p.y < -20) { p.y = Math.random() * h; }
+            }
+        }
+
+        state.animRunning = true;
+        requestAnimationFrame(function() { tickCanvas(type); });
+    }
+
+    // ========================================
+    // SUN
+    // ========================================
+    function initSun() {
+        var container = document.getElementById('weather-effects');
+        if (!container) return;
+        var sun = document.createElement('div');
+        sun.className = 'weather-sun';
+
+        // Build rays as line paths
+        var innerRays = '';
+        var outerRays = '';
+        for (var i = 0; i < 12; i++) {
+            var angle = i * 30;
+            var rad = angle * Math.PI / 180;
+            // Inner rays (shorter, thicker)
+            var ix1 = 50 + Math.cos(rad) * 18;
+            var iy1 = 50 + Math.sin(rad) * 18;
+            var ix2 = 50 + Math.cos(rad) * 28;
+            var iy2 = 50 + Math.sin(rad) * 28;
+            innerRays += '<line x1="'+ix1+'" y1="'+iy1+'" x2="'+ix2+'" y2="'+iy2+'"/>';
+            // Outer rays (longer, thinner, offset by 15deg)
+            var orad = (angle + 15) * Math.PI / 180;
+            var ox1 = 50 + Math.cos(orad) * 24;
+            var oy1 = 50 + Math.sin(orad) * 24;
+            var ox2 = 50 + Math.cos(orad) * 38;
+            var oy2 = 50 + Math.sin(orad) * 38;
+            outerRays += '<line x1="'+ox1+'" y1="'+oy1+'" x2="'+ox2+'" y2="'+oy2+'"/>';
+        }
+
+        sun.innerHTML = '<svg viewBox="0 0 100 100">'
+            + '<defs><radialGradient id="sunGrad">'
+            + '<stop offset="0%" stop-color="#fff8e0"/>'
+            + '<stop offset="40%" stop-color="#f5d76e"/>'
+            + '<stop offset="100%" stop-color="#e8a830"/>'
+            + '</radialGradient></defs>'
+            + '<g class="sun-rays-outer">' + outerRays + '</g>'
+            + '<g class="sun-rays">' + innerRays + '</g>'
+            + '<circle class="sun-core" cx="50" cy="50" r="14"/>'
+            + '<circle class="sun-shimmer" cx="46" cy="46" r="10"/>'
+            + '</svg>';
+
+        container.appendChild(sun);
+    }
+
+    // ========================================
+    // BUTTERFLIES (trail the mouse cursor)
+    // ========================================
+    function initButterflies() {
+        var container = document.getElementById('weather-effects');
+        if (!container) return;
+
+        // Track mouse into ring buffer
+        window.addEventListener('mousemove', function(e) {
+            state.mx = e.clientX;
+            state.my = e.clientY;
+        });
+
+        // Fill initial history
+        for (var h = 0; h < CONFIG.MOUSE_HISTORY_SIZE; h++) {
+            state.mouseHistory.push({ x: state.mx, y: state.my });
+        }
+
+        // Create butterfly elements
+        for (var i = 0; i < CONFIG.BUTTERFLY_COUNT; i++) {
+            var el = document.createElement('div');
+            el.className = 'weather-butterfly';
+            el.innerHTML = butterflyHTML(BUTTERFLY_COLORS[i % BUTTERFLY_COLORS.length]);
+            // Stagger the wing animation
+            el.style.animationDelay = (i * 0.08) + 's';
+            container.appendChild(el);
+            state.butterflies.push({
+                el: el,
+                x: state.mx,
+                y: state.my,
+                offset: (i + 1) * Math.floor(CONFIG.MOUSE_HISTORY_SIZE / (CONFIG.BUTTERFLY_COUNT + 1))
+            });
+        }
+
+        // Animation loop
+        (function butterLoop() {
+            // Push latest mouse position
+            state.mouseHistory.push({ x: state.mx, y: state.my });
+            if (state.mouseHistory.length > CONFIG.MOUSE_HISTORY_SIZE) {
+                state.mouseHistory.shift();
+            }
+
+            for (var b = 0; b < state.butterflies.length; b++) {
+                var bf = state.butterflies[b];
+                var idx = Math.max(0, state.mouseHistory.length - 1 - bf.offset);
+                var target = state.mouseHistory[idx];
+
+                // Smooth interpolation
+                bf.x += (target.x - bf.x) * 0.08;
+                bf.y += (target.y - bf.y) * 0.08;
+
+                // Natural flutter
+                var flutter = Math.sin(_time * 3 + b * 1.8) * 10;
+                var hFlutter = Math.cos(_time * 2.2 + b * 2.5) * 6;
+
+                bf.el.style.transform = 'translate(' + (bf.x - 11 + hFlutter) + 'px,' + (bf.y - 11 + flutter) + 'px)';
+            }
+            requestAnimationFrame(butterLoop);
+        })();
+    }
+
+    // ========================================
+    // CLOUDS
+    // ========================================
+    function initClouds() {
+        var container = document.getElementById('weather-effects');
+        if (!container) return;
+
+        var cloudSVG = '<svg viewBox="0 0 200 100" width="200"><path d="M30 80 Q30 50 55 50 Q50 20 85 25 Q100 5 130 20 Q155 10 165 35 Q190 30 185 55 Q200 70 175 80Z" fill="currentColor"/></svg>';
+        var configs = [
+            { top: '12%', duration: 70, delay: 0,  scale: 1.2, opacity: 0.05 },
+            { top: '20%', duration: 90, delay: -30, scale: 0.8, opacity: 0.04 },
+            { top: '15%', duration: 60, delay: -50, scale: 1.0, opacity: 0.06 },
+            { top: '25%', duration: 80, delay: -15, scale: 0.6, opacity: 0.035 }
+        ];
+
+        configs.forEach(function(c) {
+            var cloud = document.createElement('div');
+            cloud.className = 'weather-cloud';
+            cloud.innerHTML = cloudSVG;
+            cloud.style.top = c.top;
+            cloud.style.opacity = c.opacity;
+            cloud.style.transform = 'scale(' + c.scale + ')';
+            cloud.style.animation = 'cloudDrift ' + c.duration + 's linear ' + c.delay + 's infinite';
+            container.appendChild(cloud);
+        });
+
+        // Inject the drift keyframes dynamically
+        if (!document.getElementById('cloud-drift-keyframes')) {
+            var style = document.createElement('style');
+            style.id = 'cloud-drift-keyframes';
+            style.textContent = '@keyframes cloudDrift { 0% { left: -220px; } 100% { left: calc(100vw + 20px); } }';
+            document.head.appendChild(style);
+        }
+    }
+
+    // ========================================
+    // FOG
+    // ========================================
+    function initFog() {
+        var container = document.getElementById('weather-effects');
+        if (!container) return;
+        var fog1 = document.createElement('div');
+        fog1.className = 'weather-fog weather-fog-1';
+        var fog2 = document.createElement('div');
+        fog2.className = 'weather-fog weather-fog-2';
+        var fog3 = document.createElement('div');
+        fog3.className = 'weather-fog weather-fog-3';
+        container.appendChild(fog1);
+        container.appendChild(fog2);
+        container.appendChild(fog3);
+    }
+
+    // ========================================
+    // LIGHTNING
+    // ========================================
+    function initLightning() {
+        var container = document.getElementById('weather-effects');
+        if (!container) return;
+        var flash = document.createElement('div');
+        flash.className = 'weather-lightning';
+        container.appendChild(flash);
+
+        // Lightning bolt SVG paths (varied shapes)
+        var boltPaths = [
+            'M20 0 L12 18 L22 18 L8 40 L14 22 L6 22 Z',
+            'M18 0 L10 15 L20 16 L6 42 L15 20 L7 19 Z',
+            'M22 0 L14 14 L24 15 L10 38 L18 18 L8 17 Z'
+        ];
+
+        function createBolt() {
+            var bolt = document.createElement('div');
+            bolt.className = 'weather-bolt';
+            var path = boltPaths[Math.floor(Math.random() * boltPaths.length)];
+            var size = 60 + Math.random() * 80;
+            bolt.innerHTML = '<svg viewBox="0 0 30 42" width="' + size + '" height="' + (size * 1.4) + '">'
+                + '<path d="' + path + '" fill="rgba(255,255,255,0.9)" stroke="rgba(200,180,255,0.6)" stroke-width="0.5"/>'
+                + '</svg>';
+            bolt.style.top = (90 + Math.random() * 100) + 'px';
+            bolt.style.left = (10 + Math.random() * 80) + 'vw';
+            container.appendChild(bolt);
+            return bolt;
+        }
+
+        function triggerFlash() {
+            // Screen flash
+            flash.classList.remove('flash');
+            void flash.offsetWidth;
+            flash.classList.add('flash');
+
+            // Show 1-2 bolt SVGs
+            var boltCount = Math.random() > 0.4 ? 2 : 1;
+            var bolts = [];
+            for (var i = 0; i < boltCount; i++) {
+                var bolt = createBolt();
+                bolt.classList.add('strike');
+                bolts.push(bolt);
+            }
+
+            // Clean up bolts after animation
+            setTimeout(function() {
+                bolts.forEach(function(b) { b.remove(); });
+            }, 600);
+
+            // Sometimes do a quick double-flash
+            if (Math.random() > 0.6) {
+                setTimeout(function() {
+                    flash.classList.remove('flash');
+                    void flash.offsetWidth;
+                    flash.classList.add('flash');
+                }, 200 + Math.random() * 300);
+            }
+
+            // Next flash in 3-8 seconds
+            state.lightningTimer = setTimeout(triggerFlash, 3000 + Math.random() * 5000);
+        }
+
+        // First flash after a short delay
+        state.lightningTimer = setTimeout(triggerFlash, 1500 + Math.random() * 3000);
+    }
+
+    // --- UTILITY ---
+    function debounce(fn, ms) {
+        var timer;
+        return function() {
+            clearTimeout(timer);
+            timer = setTimeout(fn, ms);
+        };
+    }
+
+    // ========================================
+    // BOOTSTRAP — runs exactly once
+    // ========================================
+    function init() {
+        try {
+            // URL param override for testing: ?mood=rainy, ?mood=snowy, etc.
+            var urlMood = new URLSearchParams(window.location.search).get('mood');
+            var VALID_MOODS = ['clear', 'cloudy', 'rainy', 'snowy', 'thunderstorm', 'foggy', 'windy'];
+            if (urlMood && VALID_MOODS.indexOf(urlMood) !== -1) {
+                var fakeWeather = { code: 0, temp: 22, wind: 0 };
+                var fakeLoc = { lat: 42.27, lon: -71.80, city: 'Test Mode', region: '' };
+                updateIndicator(urlMood, fakeWeather, fakeLoc);
+                if (shouldRunEffects()) startEffects(urlMood);
+                console.log('[Weather] Debug mode — mood forced to: ' + urlMood);
+                return;
+            }
+
+            fetchLocation().then(function(loc) {
+                return fetchWeather(loc.lat, loc.lon).then(function(weather) {
+                    var mood = wmoToMood(weather.code, weather.wind);
+                    updateIndicator(mood, weather, loc);
+                    if (shouldRunEffects()) {
+                        startEffects(mood);
+                    }
+                });
+            });
+        } catch (e) {
+            console.warn('Weather mood system error:', e);
+        }
+    }
+
+    // Delay init so hero animations finish first
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(init, 2000);
+        });
+    } else {
+        setTimeout(init, 2000);
+    }
+})();
