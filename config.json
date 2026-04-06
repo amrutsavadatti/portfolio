@@ -471,6 +471,26 @@
   ],
   "projects": [
     {
+      "id": "taars",
+      "name": "TAARS (Talent Acquisition Agentic RAG System)",
+      "shortDescription": "Built an embeddable AI portfolio chatbot using a custom RAPTOR retrieval system to deliver fast, cost-efficient, and context-aware responses.",
+      "detailedDescription": "I built an AI-driven portfolio chatbot to transform static portfolio websites into interactive, recruiter-focused experiences.\n\n* Designed and implemented a custom RAPTOR two-file retrieval system (JSON knowledge base + lightweight index) inspired by Obsidian-style knowledge structuring, enabling efficient context lookup without heavy vector databases.\n* Built a low-latency retrieval pipeline using keyword routing and weighted scoring (summary, tags, skills, recency) with zero LLM calls during traversal.\n* Developed a FastAPI backend integrated with Valkey for session management, caching, rate limiting, and conversation logging.\n* Implemented SSE-based streaming for real-time response delivery to improve user experience.\n* Designed a multi-tenant architecture with API-key isolation, enabling multiple users to deploy their own chatbot instances.\n* Built a plug-and-play React widget (Shadow DOM) for seamless embedding into any website.\n* Optimized system cost by restricting LLM usage to final answer generation and caching frequently asked queries.\n\nThe result is a scalable, low-cost, and production-ready AI assistant tailored for recruiter interactions and portfolio discovery.",
+      "techStack": ["FastAPI", "LangChain", "Valkey", "OpenAI API", "React"],
+      "githubUrl": "https://github.com/amrutsavadatti/TAARS",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
+      "id": "caveman-compress",
+      "name": "Caveman-Compress (Semantic Memory Compression Tool)",
+      "shortDescription": "Built a Claude skill to semantically compress memory files, reducing token usage across AI sessions by ~45% without losing structure or meaning.",
+      "detailedDescription": "I built Caveman-Compress to address inefficiencies in how AI systems repeatedly load large memory/context files.\n\n* Designed a semantic compression pipeline that reduces natural language verbosity while preserving meaning, structure, and technical integrity.\n* Achieved ~45% average token reduction across real-world memory files with zero loss of critical information.\n* Built a hybrid architecture combining LLM-based compression with local Python validation to ensure correctness of headings, code blocks, URLs, and file paths.\n* Implemented targeted post-validation fixes instead of full recompression, minimizing additional token usage.\n* Ensured strict preservation of non-compressible content such as code, commands, and structured data.\n* Packaged the tool as a reusable Claude skill and distributed via CLI (`npx skills add`) for easy developer adoption.\n\nThe result is a persistent cost optimization layer that reduces token overhead across every AI session while maintaining accuracy and reliability.\n* Run npx skills add amrutsavadatti/caveman#feature/caveman-compress ",
+      "techStack": ["Python", "LLM", "Claude Code"],
+      "githubUrl": "https://github.com/amrutsavadatti/caveman",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
       "id": "ai-assistant",
       "name": "Clarity AI",
       "shortDescription": "Built an AI-powered portfolio chatbot using Retrieval-Augmented Generation (RAG) to intelligently answer recruiter-specific questions, streamline follow-ups, and showcase projects and skills through a secure, production-deployed full-stack system.",
@@ -483,6 +503,23 @@
         "AWS EC2"
       ],
       "githubUrl": "https://github.com/amrutsavadatti/AI-assistant",
+      "liveUrl": "",
+      "screenshots": []
+    },
+    {
+      "id": "multi-agent-orchestrator",
+      "name": "Multi-Agent AI Orchestrator (OpenClaw)",
+      "shortDescription": "Built a multi-agent, multi-provider AI orchestration system that dynamically decomposes tasks and coordinates specialized agents to deliver high-quality outputs.",
+      "detailedDescription": "I built a personal multi-agent orchestration system to simulate a team of specialized AI workers collaborating on complex tasks.\n\n* Designed an orchestrator that analyzes incoming tasks (research, coding, analysis, job applications) and decomposes them into structured subtasks.\n* Spawned specialized agents (researcher, analyst, writer, coder, critic) with distinct roles and prompts to handle different parts of the workflow.\n* Implemented an asynchronous pipeline where agents collaborate: research → analysis → writing → coding → critique → iterative refinement.\n* Built quality control loops where outputs are evaluated and refined until they meet predefined standards.\n* Integrated multiple LLM providers (Claude, OpenAI) with intelligent routing based on task complexity and token constraints.\n* Developed token-aware fallback logic to route non-critical tasks to cheaper models when limits are reached.\n* Connected system outputs to Discord/Telegram for automated updates, notifications, and task tracking.\n\nThe system acts as a scalable AI workforce, improving productivity and output quality through structured orchestration and multi-agent collaboration.",
+      "techStack": [
+        "Python",
+        "OpenAI API",
+        "Claude",
+        "OpenClaw",
+        "Discord API",
+        "Telegram API"
+      ],
+      "githubUrl": "",
       "liveUrl": "",
       "screenshots": []
     },
