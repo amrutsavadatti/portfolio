@@ -127,6 +127,27 @@
       "type": "Part time",
       "projects": [
         {
+          "id": "eduorch",
+          "name": "EduOrch",
+          "shortDescription": " Ongoing Project: Building an on-prem agentic system that orchestrates Canvas LMS admin tasks for university educators — FERPA-compliant, Git-backed, and AI-driven.",
+          "detailedDescription": "EduOrch is an ongoing project I am building at WPI to eliminate the administrative overhead educators face managing Canvas LMS, course content, and lab infrastructure.\n\n* Designing a fully on-premises agentic orchestration system where educators interact via a natural language CLI — no direct Canvas UI needed for routine tasks.\n* Integrating Canvas MCP (Model Context Protocol server) to give the AI agent read/write access to courses, assignments, pages, quizzes, and announcements.\n* Using WPI's ARC Inference Cluster (on-prem GPU nodes) to host Llama 3.1 70B as the reasoning engine — keeping all data within WPI's network for FERPA compliance.\n* Built a Canvas-as-Code model where all course content is stored as Markdown files in WPI's on-prem GitLab instance — Git history replaces manual versioning, and GitLab is always the source of truth.\n* Implemented an edit task flow where the agent proofreads or transforms content, shows a line-by-line diff for educator approval, commits to GitLab, and pushes an unpublished draft to Canvas — with the old item tracked in a dangling pages manifest for cleanup.\n* Designed a lab server health check tool using Paramiko SSH to validate assignment server readiness before students access them.\n* All state — dangling pages, sync timestamps, action log — persisted in SQLite on the agent host. No cloud dependencies, no external API calls.",
+          "techStack": [
+            "Python",
+            "Ollama",
+            "Llama 3.1 70B",
+            "Canvas MCP",
+            "GitLab API",
+            "GitPython",
+            "Paramiko",
+            "SQLite",
+            "prompt_toolkit",
+            "WPI ARC Inference"
+          ],
+          "githubUrl": "",
+          "liveUrl": "./eduorch_hld.html",
+          "screenshots": []
+        },
+        {
           "id": "AL-maintainence",
           "name": "AttackLab",
           "shortDescription": "Fixed Autogen exploit mismatch for course assignment",

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduOrch — High Level Design</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg:       #080b10;
+    --bg2:      #0e1318;
+    --bg3:      #141a22;
+    --border:   #1e2730;
+    --border2:  #263040;
+    --text:     #cdd6e4;
+    --muted:    #5a6a80;
+    --dim:      #2e3d50;
+    --green:    #3ddc84;
+    --cyan:     #38bdf8;
+    --amber:    #fbbf24;
+    --purple:   #a78bfa;
+    --coral:    #fb7185;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 52px 0 40px;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 14px;
+    font-weight: 300;
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  .pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .pill {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .pill.g { border-color: var(--green); color: var(--green); background: rgba(61,220,132,0.05); }
+  .pill.b { border-color: var(--cyan); color: var(--cyan); background: rgba(56,189,248,0.05); }
+  .pill.a { border-color: var(--amber); color: var(--amber); background: rgba(251,191,36,0.05); }
+  .pill.p { border-color: var(--purple); color: var(--purple); background: rgba(167,139,250,0.05); }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    background: var(--bg2);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* DIAGRAM PANEL */
+  .diagram-panel {
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    background: var(--bg2);
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+
+  .panel-title {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-left: 6px;
+  }
+
+  .diagram-body {
+    padding: 32px 24px;
+    overflow-x: auto;
+  }
+
+  /* MERMAID OVERRIDE */
+  .mermaid {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* NOTES SECTION */
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .note {
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 18px 20px;
+    background: var(--bg2);
+    position: relative;
+  }
+
+  .note-num {
+    position: absolute;
+    top: -1px;
+    right: 16px;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--border2);
+    line-height: 1;
+    font-family: var(--display);
+    pointer-events: none;
+  }
+
+  .note-tag {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .note-tag.g { color: var(--green); }
+  .note-tag.b { color: var(--cyan); }
+  .note-tag.a { color: var(--amber); }
+  .note-tag.p { color: var(--purple); }
+  .note-tag.c { color: var(--coral); }
+
+  .note-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .note-body {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .note-body code {
+    color: var(--cyan);
+    background: rgba(56,189,248,0.08);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 11px;
+  }
+
+  /* FLOW TABLE */
+  .flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 40px;
+  }
+
+  .flow-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border2);
+    background: var(--bg3);
+    font-weight: 400;
+  }
+
+  .flow-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+
+  .flow-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .flow-table tr:last-child td { border-bottom: none; }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-right: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .tag.g { background: rgba(61,220,132,0.1); color: var(--green); }
+  .tag.b { background: rgba(56,189,248,0.1); color: var(--cyan); }
+  .tag.a { background: rgba(251,191,36,0.1); color: var(--amber); }
+  .tag.p { background: rgba(167,139,250,0.1); color: var(--purple); }
+  .tag.c { background: rgba(251,113,133,0.1); color: var(--coral); }
+
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border2);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-eyebrow">high level design document</div>
+    <h1>Edu<em>Orch</em></h1>
+    <div class="header-sub">Agentic educator orchestration platform — on-premises, FERPA-compliant, Canvas-native. Shows all system boundaries, data flows, and component placement across the WPI network.</div>
+    <div class="pills">
+      <span class="pill g">WPI on-premises</span>
+      <span class="pill b">FERPA compliant</span>
+      <span class="pill a">WPI ARC inference</span>
+      <span class="pill p">Canvas MCP</span>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#3ddc84"></div>
+      Educator-facing / input layer
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#38bdf8"></div>
+      Agent core (orchestrator host)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#fbbf24"></div>
+      Tool layer (installed on agent host)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#a78bfa"></div>
+      WPI infrastructure services
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#fb7185"></div>
+      External WPI systems (Canvas, Lab servers)
+    </div>
+  </div>
+
+  <!-- MAIN DIAGRAM -->
+  <div class="section-label">system architecture diagram</div>
+  <div class="diagram-panel">
+    <div class="panel-header">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="panel-title">eduorch — full system HLD · WPI network boundary</span>
+    </div>
+    <div class="diagram-body">
+      <div class="mermaid">
+flowchart TB
+    classDef input fill:#0d2018,stroke:#3ddc84,stroke-width:1.5px,color:#3ddc84
+    classDef agent fill:#0a1a24,stroke:#38bdf8,stroke-width:1.5px,color:#38bdf8
+    classDef tool fill:#1a1500,stroke:#fbbf24,stroke-width:1.5px,color:#fbbf24
+    classDef infra fill:#130d24,stroke:#a78bfa,stroke-width:1.5px,color:#a78bfa
+    classDef system fill:#1a080d,stroke:#fb7185,stroke-width:1.5px,color:#fb7185
+    classDef store fill:#0d1a1a,stroke:#38bdf8,stroke-width:1px,color:#5a9aaa,stroke-dasharray:4 2
+
+    %% ── INPUT LAYER ──────────────────────────────
+    subgraph INPUT["  INPUT LAYER  ·  educator workstation  "]
+        direction TB
+        CLI["🖥  Educator CLI\nprompt_toolkit REPL\nDiff preview · Confirm gates\nDangling alerts"]
+    end
+
+    %% ── AGENT HOST ───────────────────────────────
+    subgraph AGENTHOST["  AGENT HOST  ·  on-prem server (Linux / Ubuntu 22.04)  "]
+        direction TB
+
+        ORCH["🧠  Orchestrator\norchestrator.py\nAgent loop · Intent classification\nTool dispatch · Action logging"]
+
+        subgraph TOOLS["  TOOL LAYER  ·  Python packages installed on agent host  "]
+            direction LR
+            CMCP["📋  Canvas MCP\ncanvas-mcp server\nREST wrapper\ncourses · assignments\npages · quizzes"]
+            GTOOL["🔀  GitLab Tool\npython-gitlab\nGitPython\ncommit · diff\nrollback · log"]
+            LABTOOL["🔬  Lab Runner\nParamiko SSH\nhealth checks\nreadiness scripts"]
+            STATE["🗃  State Store\nSQLite\nmanifest · dangling\naction log · sync state"]
+        end
+    end
+
+    %% ── WPI ARC INFERENCE ────────────────────────
+    subgraph ARC["  WPI ARC INFERENCE CLUSTER  ·  arc-ai-rag-01.wpi.edu  "]
+        direction LR
+        LLM["⚡  LLM Endpoint\nLlama 3.1 70B\nHTTP REST API\n/api/v1/prediction/ID"]
+        GPU["🖥  GPU Node Pool\nMulti-node · Load balanced\nManaged by ARC team"]
+        LLM --- GPU
+    end
+
+    %% ── WPI GITLAB ───────────────────────────────
+    subgraph GITLAB["  WPI GitLab  ·  gitlab.wpi.edu  "]
+        direction TB
+        REPO["📁  canvas-content.git\nOne MD file per Canvas item\nGit history = change log\nSource of truth"]
+        META["📄  _meta.json per course\nCanvas ID mappings\nDangling page list\nSync timestamps"]
+        REPO --- META
+    end
+
+    %% ── CANVAS LMS ───────────────────────────────
+    subgraph CANVAS["  Canvas LMS  ·  wpi.instructure.com  "]
+        direction LR
+        CAPI["🎓  Canvas REST API\nAssignments · Pages\nQuizzes · Grades\nAnnouncements"]
+        CDRAFT["📝  Unpublished Drafts\nAgent edit output\nAwaits educator review\n& manual publish"]
+        CAPI --- CDRAFT
+    end
+
+    %% ── LAB SERVERS ──────────────────────────────
+    subgraph LABS["  Lab Servers  ·  WPI internal network  "]
+        direction LR
+        LS1["🖥  Lab Server\nAssignment A\nShared · SSH"]
+        LS2["🖥  Lab Server\nAssignment B\nShared · SSH"]
+        LS3["🖥  Lab Server\nAssignment N\nShared · SSH"]
+    end
+
+    %% ── CONNECTIONS ──────────────────────────────
+    CLI -->|"natural language\ncommand"| ORCH
+    ORCH -->|"diff preview\nconfirm prompt\nresult"| CLI
+
+    ORCH -->|"prompt + context\nHTTP POST\nWPI LAN"| LLM
+    LLM -->|"completion\ntool call decision"| ORCH
+
+    ORCH -->|"read · write\nassignment · page\nquiz · announcement"| CMCP
+    CMCP -->|"Canvas REST\nHTTPS"| CAPI
+
+    ORCH -->|"commit · diff\ncheckout · log"| GTOOL
+    GTOOL -->|"git over HTTPS\nor SSH"| REPO
+
+    ORCH -->|"SSH exec\nhealth check"| LABTOOL
+    LABTOOL -->|"Paramiko SSH\nport 22"| LS1
+    LABTOOL -->|"Paramiko SSH\nport 22"| LS2
+    LABTOOL -->|"Paramiko SSH\nport 22"| LS3
+
+    ORCH <-->|"read/write\nmanifest · log"| STATE
+
+    %% STYLES
+    class CLI input
+    class ORCH agent
+    class CMCP,GTOOL,LABTOOL,STATE tool
+    class LLM,GPU infra
+    class CAPI,CDRAFT,REPO,META,LS1,LS2,LS3 system
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA FLOW DIAGRAM -->
+  <div class="section-label">edit task flow (proofread / find-replace)</div>
+  <div class="diagram-panel">
+    <div class="panel-header">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="panel-title">sequence — educator edit task end to end</span>
+    </div>
+    <div class="diagram-body">
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant ED as 🖥 Educator CLI
+    participant OR as 🧠 Orchestrator
+    participant ARC as ⚡ WPI ARC LLM
+    participant GT as 🔀 GitLab Tool
+    participant GL as 📁 GitLab Repo
+    participant CM as 📋 Canvas MCP
+    participant CV as 🎓 Canvas LMS
+    participant ST as 🗃 SQLite State
+
+    ED->>OR: "proofread Assignment 3 in CS101"
+    OR->>ARC: classify intent + plan tools
+    ARC-->>OR: intent=edit, tool=gitlab+canvas
+    OR->>GT: read current MD file
+    GT->>GL: git show HEAD:CS101/assignments/assignment_03.md
+    GL-->>GT: raw markdown content
+    GT-->>OR: file content
+    OR->>ARC: apply proofread to content
+    ARC-->>OR: edited markdown + change summary
+    OR->>ED: show diff (before/after) + confirm?
+    ED->>OR: confirmed
+    OR->>GT: commit edited file
+    GT->>GL: git commit -m "proofread: fix 4 grammar issues, Assignment 3, CS101"
+    GL-->>GT: commit SHA
+    OR->>CM: push edited content as unpublished draft
+    CM->>CV: POST /api/v1/courses/ID/assignments (published=false)
+    CV-->>CM: new draft assignment ID
+    OR->>ST: add old assignment to dangling list
+    ST-->>OR: manifest updated
+    OR->>ED: "Draft created. 1 item added to dangling list."
+      </div>
+    </div>
+  </div>
+
+  <!-- SYNC FLOW -->
+  <div class="section-label">sync flow (gitlab → canvas)</div>
+  <div class="diagram-panel">
+    <div class="panel-header">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="panel-title">sequence — sync course to canvas</span>
+    </div>
+    <div class="diagram-body">
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant ED as 🖥 Educator CLI
+    participant OR as 🧠 Orchestrator
+    participant GT as 🔀 GitLab Tool
+    participant GL as 📁 GitLab Repo
+    participant CM as 📋 Canvas MCP
+    participant CV as 🎓 Canvas LMS
+    participant ST as 🗃 SQLite State
+
+    ED->>OR: "sync CS101 to Canvas"
+    OR->>ED: "⚠ This will overwrite Canvas with GitLab version. Confirm?"
+    ED->>OR: confirmed
+    OR->>GT: list all MD files for CS101
+    GT->>GL: git ls-files CS101/
+    GL-->>GT: file list + content
+    GT-->>OR: all course content
+    loop for each MD file
+        OR->>CM: push content to Canvas item (published=true)
+        CM->>CV: PUT /api/v1/courses/ID/assignments/ITEM_ID
+        CV-->>CM: updated item
+        OR->>ST: update last_canvas_sync timestamp
+    end
+    OR->>ED: "CS101 synced. 12 items updated in Canvas."
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT NOTES -->
+  <div class="section-label">component placement notes</div>
+  <div class="notes">
+
+    <div class="note">
+      <div class="note-num">01</div>
+      <div class="note-tag g">input layer</div>
+      <div class="note-title">Educator CLI</div>
+      <div class="note-body">Runs on the educator's own laptop or workstation. Built with <code>prompt_toolkit</code>. Communicates with the orchestrator over WPI LAN (or VPN). No data stored locally — session state lives on the agent host.</div>
+    </div>
+
+    <div class="note">
+      <div class="note-num">02</div>
+      <div class="note-tag b">agent core</div>
+      <div class="note-title">Orchestrator host</div>
+      <div class="note-body">A single on-prem Linux server. All Python tools are installed here: <code>canvas-mcp</code>, <code>python-gitlab</code>, <code>GitPython</code>, <code>Paramiko</code>, <code>SQLite</code>. This is the only machine that talks to ARC, Canvas, GitLab, and lab servers.</div>
+    </div>
+
+    <div class="note">
+      <div class="note-num">03</div>
+      <div class="note-tag a">LLM inference</div>
+      <div class="note-title">WPI ARC cluster</div>
+      <div class="note-body">The orchestrator calls <code>arc-ai-rag-01.wpi.edu</code> over WPI LAN via HTTP POST. No data leaves WPI network. ARC manages GPU nodes and load balancing. Start with Llama 3.1 70B — consult ARC team for model hosting.</div>
+    </div>
+
+    <div class="note">
+      <div class="note-num">04</div>
+      <div class="note-tag a">canvas MCP</div>
+      <div class="note-title">canvas-mcp server</div>
+      <div class="note-body">Installed and runs on the agent host as a local MCP server process. The orchestrator calls it via stdio or local socket. It translates tool calls into Canvas REST API calls over HTTPS to <code>wpi.instructure.com</code>.</div>
+    </div>
+
+    <div class="note">
+      <div class="note-num">05</div>
+      <div class="note-tag p">gitlab</div>
+      <div class="note-title">Source of truth</div>
+      <div class="note-body">WPI's on-prem GitLab instance. One repo per institution or per course. The <code>GitLab tool</code> on the agent host clones locally and pushes via HTTPS or SSH. Git history is the complete change log — no separate versioning needed.</div>
+    </div>
+
+    <div class="note">
+      <div class="note-num">06</div>
+      <div class="note-tag c">lab servers</div>
+      <div class="note-title">SSH via Paramiko</div>
+      <div class="note-body">Lab servers are reachable over WPI internal network only. The <code>Lab Runner tool</code> on the agent host uses <code>Paramiko</code> with key-based auth to SSH in, execute readiness check commands, and capture stdout/stderr as structured pass/fail results.</div>
+    </div>
+
+  </div>
+
+  <!-- NETWORK BOUNDARY TABLE -->
+  <div class="section-label">network calls & protocols</div>
+  <table class="flow-table">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Protocol</th>
+        <th>Data</th>
+        <th>Boundary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Educator CLI</td>
+        <td>Orchestrator host</td>
+        <td><span class="tag b">TCP / stdin</span></td>
+        <td>Natural language commands, diff output</td>
+        <td><span class="tag g">WPI LAN / VPN</span></td>
+      </tr>
+      <tr>
+        <td>Orchestrator</td>
+        <td>WPI ARC LLM</td>
+        <td><span class="tag b">HTTPS REST</span></td>
+        <td>Prompt + context (no student PII)</td>
+        <td><span class="tag g">WPI LAN only</span></td>
+      </tr>
+      <tr>
+        <td>Canvas MCP</td>
+        <td>Canvas LMS</td>
+        <td><span class="tag b">HTTPS REST</span></td>
+        <td>Course content, assignment bodies</td>
+        <td><span class="tag g">WPI LAN only</span></td>
+      </tr>
+      <tr>
+        <td>GitLab Tool</td>
+        <td>WPI GitLab</td>
+        <td><span class="tag b">HTTPS / SSH</span></td>
+        <td>Markdown files, commits, diffs</td>
+        <td><span class="tag g">WPI LAN only</span></td>
+      </tr>
+      <tr>
+        <td>Lab Runner</td>
+        <td>Lab Servers</td>
+        <td><span class="tag b">SSH port 22</span></td>
+        <td>Shell commands, stdout/stderr</td>
+        <td><span class="tag g">WPI LAN only</span></td>
+      </tr>
+      <tr>
+        <td>Orchestrator</td>
+        <td>SQLite</td>
+        <td><span class="tag a">local file I/O</span></td>
+        <td>Manifest, dangling list, action log</td>
+        <td><span class="tag g">Agent host local</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <span>EduOrch HLD · v0.1 · April 2026</span>
+    <span>WPI Academic & Research Computing · FERPA compliant · all traffic on-premises</span>
+  </div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      background: '#0e1318',
+      primaryColor: '#0a1a24',
+      primaryTextColor: '#cdd6e4',
+      primaryBorderColor: '#38bdf8',
+      lineColor: '#2e3d50',
+      secondaryColor: '#0d2018',
+      tertiaryColor: '#130d24',
+      edgeLabelBackground: '#0e1318',
+      clusterBkg: '#0e1318',
+      clusterBorder: '#263040',
+      titleColor: '#cdd6e4',
+      nodeTextColor: '#cdd6e4',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '13px',
+      sequenceNumberColor: '#38bdf8',
+      activationBkgColor: '#0a1a24',
+      activationBorderColor: '#38bdf8',
+      actorBkg: '#0a1a24',
+      actorBorder: '#38bdf8',
+      actorTextColor: '#cdd6e4',
+      actorLineColor: '#2e3d50',
+      signalColor: '#38bdf8',
+      signalTextColor: '#cdd6e4',
+      labelBoxBkgColor: '#0e1318',
+      labelBoxBorderColor: '#263040',
+      labelTextColor: '#cdd6e4',
+      loopTextColor: '#cdd6e4',
+      noteBkgColor: '#1a1500',
+      noteBorderColor: '#fbbf24',
+      noteTextColor: '#fbbf24',
+      messageTextColor: '#5a6a80',
+    },
+    flowchart: {
+      curve: 'basis',
+      padding: 20,
+      nodeSpacing: 40,
+      rankSpacing: 60,
+      htmlLabels: false,
+    },
+    sequence: {
+      diagramMarginX: 20,
+      diagramMarginY: 20,
+      actorMargin: 60,
+      width: 150,
+      height: 65,
+      boxMargin: 10,
+      boxTextMargin: 5,
+      noteMargin: 10,
+      messageMargin: 35,
+      mirrorActors: false,
+      useMaxWidth: true,
+    }
+  });
+</script>
+</body>
+</html>
