@@ -1907,4 +1907,112 @@ document.querySelectorAll('.navbar a').forEach(link => {
     } else {
         setTimeout(init, 2000);
     }
+
+// ============================================================
+// UMAMI ANALYTICS — Section dwell time + interaction tracking
+// ============================================================
+
+(function initSectionDwellTracking() {
+    // Wait for umami to be available (loaded async/defer)
+    function setup() {
+        if (typeof window.umami === 'undefined') return;
+
+        var sections = [
+            { el: document.querySelector('#home'),         name: 'home' },
+            { el: document.querySelector('#experience'),   name: 'experience' },
+            { el: document.querySelector('#projects'),     name: 'projects' },
+            { el: document.querySelector('#skills'),       name: 'skills' },
+            { el: document.querySelector('#education'),    name: 'education' },
+            { el: document.querySelector('#achievements'), name: 'achievements' },
+            { el: document.querySelector('#resume'),       name: 'resume' },
+            { el: document.querySelector('#joke'),         name: 'joke' },
+        ].filter(function(s) { return s.el; });
+
+        var entryTimes = new Map();
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                var name = entry.target.dataset.analyticsName;
+                if (entry.isIntersecting) {
+                    entryTimes.set(name, Date.now());
+                } else {
+                    var start = entryTimes.get(name);
+                    if (start) {
+                        var seconds = Math.round((Date.now() - start) / 1000);
+                        if (seconds >= 1) window.umami.track('section-view', { section: name, seconds: seconds });
+                        entryTimes.delete(name);
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(function(s) {
+            s.el.dataset.analyticsName = s.name;
+            observer.observe(s.el);
+        });
+
+        // Flush still-visible sections on page exit
+        window.addEventListener('pagehide', function() {
+            entryTimes.forEach(function(start, name) {
+                var seconds = Math.round((Date.now() - start) / 1000);
+                if (seconds >= 1) window.umami.track('section-view', { section: name, seconds: seconds });
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+    } else {
+        setup();
+    }
+})();
+
+(function initClickTracking() {
+    function setup() {
+        if (typeof window.umami === 'undefined') return;
+
+        document.addEventListener('click', function(e) {
+            // Nav links
+            var navLink = e.target.closest('.navbar a');
+            if (navLink) {
+                var href = navLink.getAttribute('href') || '';
+                var section = href.replace('#', '') || 'home';
+                window.umami.track('nav-click', { section: section });
+            }
+
+            // Company tiles (Experience)
+            var companyTile = e.target.closest('.exp-tile');
+            if (companyTile) {
+                var name = companyTile.querySelector('h3') && companyTile.querySelector('h3').textContent.trim();
+                if (name) window.umami.track('company-click', { company: name });
+            }
+
+            // Experience drill-down project cards
+            var expProjectCard = e.target.closest('.exp-project-card');
+            if (expProjectCard) {
+                var name = expProjectCard.querySelector('h3') && expProjectCard.querySelector('h3').textContent.trim();
+                if (name) window.umami.track('project-click', { project: name, source: 'experience' });
+            }
+
+            // Projects section tiles
+            var projTile = e.target.closest('.proj-tile');
+            if (projTile) {
+                var name = projTile.querySelector('h3') && projTile.querySelector('h3').textContent.trim();
+                if (name) window.umami.track('project-click', { project: name, source: 'projects' });
+            }
+
+            // Resume buttons (Download PDF / View Resume)
+            if (e.target.closest('#resume .btn-primary, #resume .btn-secondary')) {
+                var action = e.target.closest('.btn-primary') ? 'download' : 'view';
+                window.umami.track('resume-click', { action: action });
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+    } else {
+        setup();
+    }
+})();
 })();
