@@ -492,6 +492,26 @@
   ],
   "projects": [
     {
+      "id": "mars",
+      "name": "MARS (Machine Assistance & Resolution System)",
+      "shortDescription": "Built a multimodal product-support agent for the Vulcan OmniPro 220 welder that answers grounded setup, troubleshooting, and safety questions using manual retrieval, OCR, structured tables, visual artifacts, and optional voice I/O.",
+      "detailedDescription": "MARS is a multimodal product-support assistant I built for the Prox Founding Engineer Challenge to help users troubleshoot, configure, and safely operate the Vulcan OmniPro 220 welder.\n\n* Designed the system as a grounded product agent rather than a generic PDF chatbot, focusing on high-value workflows like polarity setup, duty-cycle lookup, troubleshooting, and diagram retrieval.\n* Built an offline knowledge pipeline that converts the owner manual, quick-start guide, selection chart, and product visuals into a local retrieval bundle with page text, targeted OCR, visual metadata, structured articles, and hand-verified tables.\n* Implemented a FastAPI backend with Anthropic streaming tool use so the agent can decide which retrieval tool to call and answer from local evidence instead of relying on model memory.\n* Used a lexical retrieval stack based on BM25, fuzzy matching, synonym expansion, and deterministic exact lookups for high-stakes facts such as duty cycles and polarity settings.\n* Built a React frontend that supports streaming responses, artifact rendering, cited manual pages, images, interactive HTML widgets, Mermaid diagrams, and voice input/output.\n* Added curated structured outputs so the assistant can return more useful artifacts than plain text, including tables, setup references, and troubleshooting visuals.\n* Optimized the system for speed, inspectability, and groundedness by keeping the knowledge layer local and precomputed rather than parsing documents at request time.\n\nThe result is a domain-specific AI assistant that feels practical for someone standing next to the machine, not just impressive as a demo.",
+      "techStack": [
+        "Python",
+        "FastAPI",
+        "Anthropic API",
+        "OpenAI API",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "BM25",
+        "RapidFuzz"
+      ],
+      "githubUrl": "https://github.com/amrutsavadatti/prox-challenge",
+      "liveUrl": "https://youtu.be/yuOQoFR6Lp0",
+      "screenshots": []
+    },
+    {
       "id": "taars",
       "name": "TAARS (Talent Acquisition Agentic RAG System)",
       "shortDescription": "Built an embeddable AI portfolio chatbot using a custom RAPTOR retrieval system to deliver fast, cost-efficient, and context-aware responses.",
