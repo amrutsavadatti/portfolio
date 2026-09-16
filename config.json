@@ -492,6 +492,24 @@
   ],
   "projects": [
     {
+      "id": "lidplane",
+      "name": "LidPlane",
+      "shortDescription": "Built an open-source macOS menu-bar app that turns closing a MacBook lid into a fold animation, driven by the built-in lid-angle sensor.",
+      "detailedDescription": "LidPlane is a small macOS menu-bar app. When you move your MacBook's lid, it freezes the display, tilts that frozen image back from the hinge like a physical panel, and softens its far edge into nothing, then returns you to the live desktop the moment you stop moving.\n\n* Read the MacBook's lid-angle sensor directly over IOKit HID at 60 Hz, with a motion state machine that handles the reference angle, a deadband, and stillness detection for each gesture.\n* Built the overlay with AppKit and Core Animation layers instead of Metal, using a hinge-anchored CATransform3D rotation with perspective so the blur bands and edge mask stay attached to the panel.\n* Designed a progressive blur from five Core Image gaussian layers (10 to 200px), each revealed by its own gradient mask, so the image gets softer further from the hinge instead of fading as one flat sheet. Rendered the wide radii at reduced resolution to keep every frame cheap.\n* Decoupled rendering from sensor sampling: the sensor only reports whole degrees, so a CADisplayLink eases toward the target angle with frame-rate-independent exponential smoothing, which looks the same on 60 Hz and 120 Hz displays.\n* Built a first-run calibration flow that measures each machine's maximum open angle and the angle where the screen stops being visible, so the effect happens at the right point without changing how it looks.\n* Kept it private by design: screen captures via ScreenCaptureKit stay in memory for one movement and are then discarded, and the binary has no network code, analytics, or accounts.\n* Solved a macOS permissions (TCC) problem where every ad-hoc-signed rebuild lost the Screen Recording permission, using a self-signed code-signing identity whose designated requirement survives rebuilds.\n* Shipped it as a signed DMG with a download page and a step-by-step install guide.\n\nRuns on Apple Silicon MacBooks with macOS 14 or later. MIT licensed.",
+      "techStack": [
+        "Swift",
+        "AppKit",
+        "Core Animation",
+        "Core Image",
+        "ScreenCaptureKit",
+        "IOKit HID",
+        "macOS"
+      ],
+      "githubUrl": "https://github.com/amrutsavadatti/LidPlane",
+      "liveUrl": "https://amrutsavadatti.github.io/getLidPlane/",
+      "screenshots": []
+    },
+    {
       "id": "mars",
       "name": "MARS (Machine Assistance & Resolution System)",
       "shortDescription": "Built a multimodal product-support agent for the Vulcan OmniPro 220 welder that answers grounded setup, troubleshooting, and safety questions using manual retrieval, OCR, structured tables, visual artifacts, and optional voice I/O.",

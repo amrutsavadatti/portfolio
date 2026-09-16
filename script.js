@@ -1506,6 +1506,8 @@ document.querySelectorAll('.navbar a').forEach(link => {
         }
         if (loc.region) {
             html += '<span class="weather-region">' + loc.region + '</span>';
+            var locLabel = document.getElementById('photo-location');
+            if (locLabel) locLabel.textContent = 'Based in ' + loc.region + ', USA';
         }
         el.innerHTML = html;
         el.title = loc.city;
